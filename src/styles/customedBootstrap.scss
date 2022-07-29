@@ -1,0 +1,26 @@
+$theme-colors: (
+  'primary': #00c7ae,
+  'success': #00c7ae,
+  'danger': #fa5963,
+);
+$link-color: inherit;
+$link-hover-color: inherit;
+
+@import '~bootstrap/scss/bootstrap.scss';
+
+.form-control {
+  &::placeholder {
+    color: #b5b5b5;
+  }
+  &:focus {
+    border-color: #e1e1e1;
+    box-shadow: 0 0 0 0.2rem rgba(0, 199, 174, 0.25);
+  }
+  &.is-invalid {
+    border-color: #fa5963;
+    &:focus {
+      border-color: #fa5963;
+      box-shadow: 0 0 0 0.2rem rgba(250, 89, 99, 0.25);
+    }
+  }
+}

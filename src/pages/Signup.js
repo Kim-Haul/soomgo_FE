@@ -11,7 +11,7 @@ const Signup = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm({ mode: 'onChange' });
+  } = useForm({ mode: 'onTouched' });
 
   const onSubmit = async (data) => {
     try {
@@ -26,32 +26,40 @@ const Signup = () => {
 
   return (
     <div>
-      <h2>숨고에 오신 것을 환영합니다</h2>
+      <h1>숨고에 오신 것을 환영합니다</h1>
       <SignupForm onSubmit={handleSubmit(onSubmit)}>
         <Form.Label>이름</Form.Label>
         <Form.Control
           type="text"
           placeholder="이름(실명)을 입력해주세요"
           autoComplete="off"
+          isInvalid={!!errors.username}
           {...register('username', { required: '이름을 입력해주세요.' })}
         />
-        {errors.username && <p>{errors.username.message}</p>}
+        {errors.username && (
+          <Form.Text className="text-danger">
+            {errors.username.message}
+          </Form.Text>
+        )}
 
         <Form.Label>이메일</Form.Label>
         <Form.Control
           type="email"
           placeholder="example@soomgo.com"
           autoComplete="off"
+          isInvalid={!!errors.email}
           {...register('email', {
             required: '올바른 이메일 주소를 입력해주세요.',
             pattern: /^\S+@\S+$/i,
           })}
         />
         {errors.email && errors.email.type === 'required' && (
-          <p>이메일을 입력해주세요.</p>
+          <Form.Text className="text-danger">{errors.email.message}</Form.Text>
         )}
         {errors.email && errors.email.type === 'pattern' && (
-          <p>올바른 이메일 주소를 입력해주세요.</p>
+          <Form.Text className="text-danger">
+            올바른 이메일 주소를 입력해주세요.
+          </Form.Text>
         )}
 
         <Form.Label>비밀번호</Form.Label>
@@ -59,21 +67,26 @@ const Signup = () => {
           type="password"
           placeholder="영문+숫자 조합 8자리 이상 입력해주세요"
           autoComplete="off"
+          isInvalid={!!errors.password}
           {...register('password', {
-            required: true,
+            required: '비밀번호를 입력해주세요.',
             minLength: 8,
-            // pattern: 영문 + 숫자 정규식,
+            // TODO: pattern: 영문 + 숫자 정규식,
           })}
         />
         {errors.password && errors.password.type === 'required' && (
-          <p>비밀번호를 입력해주세요.</p>
+          <Form.Text className="text-danger">
+            {errors.password.message}
+          </Form.Text>
         )}
         {errors.password && errors.password.type === 'minLength' && (
-          <p>영문+숫자 조합 8자리 이상 입력해주세요.</p>
+          <Form.Text className="text-danger">
+            영문+숫자 조합 8자리 이상 입력해주세요.
+          </Form.Text>
         )}
 
         <button disabled={!isValid}>회원가입</button>
-        {/* <button>카카오톡으로 시작하기</button> */}
+        <button className="btn-kakao">Kakao로 가입하기</button>
       </SignupForm>
     </div>
   );
@@ -85,4 +98,11 @@ const SignupForm = styled.form`
   display: flex;
   flex-direction: column;
   width: 60%;
+  button {
+    margin-top: 10px;
+    &.btn-kakao {
+      background: #fee500;
+      color: #050101;
+    }
+  }
 `;
