@@ -1,35 +1,49 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
 import styled from 'styled-components';
+import instance from '../shared/Request';
+import { useNavigate } from 'react-router-dom';
+import Form from 'react-bootstrap/Form';
 
 const Signup = () => {
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
     formState: { errors, isValid },
   } = useForm({ mode: 'onChange' });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log(data);
     // 비동기작업 시작
+    try {
+      const res = await instance.post('/api/signup', data);
+      console.log(res);
+      alert('회원가입 성공');
+      navigate('/login');
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
     <div>
       <h2>숨고에 오신 것을 환영합니다</h2>
       <SignupForm onSubmit={handleSubmit(onSubmit)}>
-        <label>이름</label>
-        <input
+        <Form.Label>이름</Form.Label>
+        <Form.Control
           type="text"
           placeholder="이름(실명)을 입력해주세요"
+          autoComplete="off"
           {...register('username', { required: '이름을 입력해주세요.' })}
         />
         {errors.username && <p>{errors.username.message}</p>}
 
-        <label>이메일</label>
-        <input
+        <Form.Label>이메일</Form.Label>
+        <Form.Control
           type="email"
           placeholder="example@soomgo.com"
+          autoComplete="off"
           {...register('email', {
             required: '올바른 이메일 주소를 입력해주세요.',
             pattern: /^\S+@\S+$/i,
@@ -42,10 +56,11 @@ const Signup = () => {
           <p>올바른 이메일 주소를 입력해주세요.</p>
         )}
 
-        <label>비밀번호</label>
-        <input
+        <Form.Label>비밀번호</Form.Label>
+        <Form.Control
           type="password"
           placeholder="영문+숫자 조합 8자리 이상 입력해주세요"
+          autoComplete="off"
           {...register('password', {
             required: true,
             minLength: 8,
