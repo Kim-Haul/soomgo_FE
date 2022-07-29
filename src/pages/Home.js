@@ -1,10 +1,10 @@
 import React from 'react';
-import instance from '../shared/Request';
+import apis from '../api';
 
 const Home = () => {
-  const getAuth = async () => {
+  const getAuthInfo = async () => {
     try {
-      const res = await instance.get('/api/auth');
+      const res = await apis.getAuth();
       console.log(res);
     } catch (e) {
       console.log(e);
@@ -13,7 +13,7 @@ const Home = () => {
 
   return (
     <div>
-      <button onClick={getAuth}>auth 불러오기</button>
+      <button onClick={getAuthInfo}>auth 불러오기</button>
     </div>
   );
 };

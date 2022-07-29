@@ -1,9 +1,9 @@
 import React from 'react';
 import { useForm } from 'react-hook-form';
-import styled from 'styled-components';
-import instance from '../shared/Request';
 import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
 import Form from 'react-bootstrap/Form';
+import apis from '../api';
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -14,10 +14,8 @@ const Signup = () => {
   } = useForm({ mode: 'onChange' });
 
   const onSubmit = async (data) => {
-    console.log(data);
-    // 비동기작업 시작
     try {
-      const res = await instance.post('/api/signup', data);
+      const res = await apis.signup(data);
       console.log(res);
       alert('회원가입 성공');
       navigate('/login');

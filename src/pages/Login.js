@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Form from 'react-bootstrap/Form';
-import instance from '../shared/Request';
+import apis from '../api';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ const Login = () => {
 
   const onSubmit = async (data) => {
     try {
-      const res = await instance.post('/api/login', data);
+      const res = await apis.login(data);
       console.log(res);
       localStorage.setItem('TOKEN', res.data);
       alert('로그인 성공');
