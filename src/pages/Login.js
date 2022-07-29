@@ -11,7 +11,7 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm({ mode: 'onChange' });
+  } = useForm({ mode: 'onTouched' });
 
   const onSubmit = async (data) => {
     try {
@@ -27,19 +27,26 @@ const Login = () => {
 
   return (
     <div>
-      <h2>숨고에 오신 것을 환영합니다</h2>
+      <h2>로그인</h2>
       <SignupForm onSubmit={handleSubmit(onSubmit)}>
         <Form.Label>이메일</Form.Label>
         <Form.Control
           type="email"
           placeholder="example@soomgo.com"
           autoComplete="off"
+          isInvalid={!!errors.email}
           {...register('email', {
-            required: true,
+            required: '올바른 이메일 주소를 입력해주세요.',
+            pattern: /^\S+@\S+$/i,
           })}
         />
         {errors.email && errors.email.type === 'required' && (
-          <p>이메일 주소를 입력해주세요.</p>
+          <Form.Text className="text-danger">{errors.email.message}</Form.Text>
+        )}
+        {errors.email && errors.email.type === 'pattern' && (
+          <Form.Text className="text-danger">
+            올바른 이메일 주소를 입력해주세요.
+          </Form.Text>
         )}
 
         <Form.Label>비밀번호</Form.Label>
@@ -48,15 +55,17 @@ const Login = () => {
           placeholder="비밀번호를 입력해주세요."
           autoComplete="off"
           {...register('password', {
-            required: true,
+            required: '비밀번호를 입력해주세요.',
           })}
         />
-        {errors.password && errors.password.type === 'required' && (
-          <p>비밀번호를 입력해주세요.</p>
+        {errors.password && (
+          <Form.Text className="text-danger">
+            {errors.password.message}
+          </Form.Text>
         )}
 
         <button disabled={!isValid}>이메일 로그인</button>
-        <button>카카오톡으로 시작하기</button>
+        <button className="btn-kakao">Kakao로 시작하기</button>
         <Link to="/signup">계정이 없으신가요?</Link>
       </SignupForm>
     </div>
@@ -69,4 +78,11 @@ const SignupForm = styled(Form)`
   display: flex;
   flex-direction: column;
   width: 60%;
+  button {
+    margin-top: 10px;
+    &.btn-kakao {
+      background: #fee500;
+      color: #050101;
+    }
+  }
 `;
