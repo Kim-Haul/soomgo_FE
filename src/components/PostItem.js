@@ -1,51 +1,64 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { AiFillLike } from 'react-icons/ai';
 import { FaCommentDots } from 'react-icons/fa';
 
-const PostItem = () => {
+const PostItem = ({ post }) => {
+  // const {
+  //   id,
+  //   subject,
+  //   title,
+  //   content,
+  //   tagList,
+  //   likeCount,
+  //   commentCount,
+  //   createdAt,
+  // } = post;
+
+  // console.log(post);
+
   return (
-      <Item>
-        <Link to="posts/postid">
-          <em>subject</em>
-          <PostContent>
-            <div>
-              <strong>title</strong>
-              <p>
-                content - Lorem ipsum, dolor sit amet consectetur adipisicing
-                elit. Exercitationem iste repellat alias repellendus tenetur
-                nam, libero veritatis! Esse neque voluptate ipsum ipsam
-                expedita, aperiam sit.
-              </p>
-              <ul className="list-tag">
-                <li>tag1</li>
-                <li>tag2</li>
-                <li>tag3</li>
-              </ul>
-            </div>
-            <img src="/images/icon-all.png" alt="" />
-          </PostContent>
-          <PostFooter>
-            <ul className="list-count">
-              <li>
-                <AiFillLike />
-                likeCount
-              </li>
-              <li>
-                <FaCommentDots />
-                commentCount
-              </li>
+    <Item>
+      <Link to={`posts/${post.id}`}>
+        <em>{post.subject}</em>
+        <PostContent>
+          <div>
+            <strong>{post.title}</strong>
+            <p>{post.content}</p>
+            <ul className="list-tag">
+              {post.tagList.map((tag, idx) => (
+                <li key={idx}>{tag}</li>
+              ))}
             </ul>
-            <small>createdAt</small>
-          </PostFooter>
-        </Link>
-      </Item>
+          </div>
+          <img src="/images/icon-all.png" alt="" />
+        </PostContent>
+        <PostFooter>
+          <ul className="list-count">
+            <li>
+              <AiFillLike />
+              {post.likeCount}
+            </li>
+            <li>
+              <FaCommentDots />
+              {post.commentCount}
+            </li>
+          </ul>
+          <small>{post.createdAt}</small>
+        </PostFooter>
+      </Link>
+    </Item>
   );
 };
 
 export default PostItem;
+
+PostItem.propTypes = {
+  post: PropTypes.object,
+};
 
 const Item = styled.li`
   padding: 16px 8px;
@@ -65,6 +78,7 @@ const Item = styled.li`
 
 const PostContent = styled.div`
   display: flex;
+  justify-content: space-between;
   strong {
     display: block;
     margin-bottom: 4px;

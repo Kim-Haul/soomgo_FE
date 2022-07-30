@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 import { categories } from '../data';
+import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 import PostItem from '../components/PostItem';
 
@@ -12,6 +14,18 @@ const Life = () => {
     setSelected(name);
     console.log(name); // delayed!
   };
+
+  const getDetailData = () => {
+    try {
+      const res = axios.get('http://localhost:5001/posts');
+      return res;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  const { data: postList } = useQuery(['postList'], getDetailData);
+  console.log(postList.data);
 
   return (
     <LifeSection>
@@ -54,10 +68,8 @@ const Life = () => {
         {/* TODO: 조회수 순 포스트 캐러셀 추가 */}
 
         <ul>
-          {Array(8)
-            .fill()
-            .map((_, i) => (
-              <PostItem key={i} />
+          {postList.data.map((post) => (
+              <PostItem key={post.id} post={post} />
             ))}
         </ul>
       </LifeContentSection>

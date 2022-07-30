@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import styled from 'styled-components';
@@ -10,26 +11,27 @@ import {
   faEllipsisVertical,
 } from '@fortawesome/free-solid-svg-icons';
 
-const getDetailData = () => {
-  return axios.get('http://localhost:5001/posts');
-};
-
-const getCommentsData = () => {
-  return axios.get('http://localhost:5001/comments');
-};
-
-const addComment = (data) => {
-  return axios.post('http://localhost:5001/comments', data);
-};
-
-const deleteComment = (id) => {
-  return axios.delete(`http://localhost:5001/comments/${id}`);
-};
-
 // 컴포넌트
 const Detail = () => {
+  const { postId } = useParams();
   // 댓글 입력 받기
   const comment_input = React.useRef('');
+
+  const getDetailData = () => {
+    return axios.get(`http://localhost:5001/posts/${postId}`);
+  };
+  
+  const getCommentsData = () => {
+    return axios.get('http://localhost:5001/comments');
+  };
+  
+  const addComment = (data) => {
+    return axios.post('http://localhost:5001/comments', data);
+  };
+  
+  const deleteComment = (id) => {
+    return axios.delete(`http://localhost:5001/comments/${id}`);
+  };
 
   // 등록 버튼 토글
   const [is_comment, setIsComment] = useState(false);
@@ -135,7 +137,7 @@ const Detail = () => {
                 <FontAwesomeIcon icon={faThumbsUp} />
               </Font>
               <FontContent>
-                좋아요 {detail_query.data.data.commnetCount}
+                좋아요 {detail_query.data.data.commentCount}
               </FontContent>
             </Like>
             <CommentCount>

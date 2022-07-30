@@ -19,6 +19,11 @@ const apis = {
   signup: (data) => api.post('/signup', data),
   login: (data) => api.post('/login', data),
   getAuth: () => api.get('/auth'),
+  // posts
+  // getDetailData: () => api.get('posts'),
+  // getCommentsData: () => api.get('comments'),
+  // addComment: (data) => api.post('comments', data),
+  // deleteComment: (id) => api.delete('comments', id)
 };
 
 export default apis;

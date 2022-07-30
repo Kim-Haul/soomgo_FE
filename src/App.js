@@ -19,11 +19,14 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
-          <Route path="/detail" element={<Detail />} />
           <Route path="/community" element={<Community />}>
             <Route path="/community/soomgo-life" element={<Life />} />
             <Route path="/community/pro-knowhow" element={<Knowhow />} />
           </Route>
+          <Route
+            path="/community/soomgo-life/posts/:postId"
+            element={<Detail />}
+          />
         </Route>
       </Routes>
     </>
