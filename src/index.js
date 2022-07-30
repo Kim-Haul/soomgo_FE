@@ -21,5 +21,6 @@ root.render(
         <App />
       </BrowserRouter>
     </QueryClientProvider>
+    ,
   </Suspense>,
 );
