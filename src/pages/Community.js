@@ -24,9 +24,7 @@ const Community = () => {
           </li>
         </ul>
       </CommunityNav>
-      <section>
-        <Outlet />
-      </section>
+      <Outlet />
     </>
   );
 };
