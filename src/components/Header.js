@@ -17,10 +17,10 @@ const Header = () => {
         <NavRight>
           <ul>
             <li>
-              <Link to="">커뮤니티</Link>
+              <Link to="/community/soomgo-life">커뮤니티</Link>
             </li>
             <li>
-              <Link to="">마켓</Link>
+              <Link to="">북마크</Link>
             </li>
             <li>
               <Link to="/login">로그인</Link>
@@ -40,32 +40,33 @@ export default Header;
 
 const HeaderComponent = styled.header`
   position: fixed;
-  display: flex;
-  justify-content: center;
-  width: 100vw;
-  padding: 0 10px;
+  top: 0;
+  left: 0;
+  right: 0;
+  border-bottom: 1px solid #f2f2f2;
+  background: #fff;
   z-index: 100;
 `;
 
 const Navbar = styled.nav`
   display: flex;
-  justify-content: space-between;
   width: 100%;
   max-width: 970px;
   height: 72px;
+  margin: 0 auto;
 `;
 
 const NavLeft = styled.div`
   display: flex;
   align-items: center;
-  width: 50%;
+  margin-right: auto;
 `;
 
 const NavRight = styled.div`
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  width: 50%;
+  margin-left: auto;
   ul {
     display: flex;
     align-items: center;
@@ -73,6 +74,7 @@ const NavRight = styled.div`
   }
   button.btn-gosu {
     min-width: 80px;
+    height: 36px;
     padding: 6.5px 0;
     border-radius: 6px;
     font-size: 14px;
