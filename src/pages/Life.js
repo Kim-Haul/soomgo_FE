@@ -1,32 +1,51 @@
-import React from 'react';
-import styled from 'styled-components';
+import React, { useState } from 'react';
+import styled, { css } from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
+import { useSelector } from 'react-redux';
 
 const Life = () => {
+  const [selected, setSelected] = useState('ALL');
+  const categories = useSelector((state) => state.category);
+  const onClickCategory = (name) => {
+    setSelected(name);
+    console.log(name); // delayed!
+  };
+
   return (
     <LifeSection>
-      <h2 hidden>
-        숨고생활
-      </h2>
+      <h2 hidden>숨고생활</h2>
       <LifeCategory>
         <ul>
-          <li>전체</li>
-          <li>궁금해요</li>
-          <li>얼마예요</li>
-          <li>고수찾아요</li>
-          <li>함께해요</li>
-          <li>일상</li>
+          <h3 hidden>카테고리 목록</h3>
+          {categories &&
+            categories.map((category) => {
+              return (
+                <CategoryItem
+                  key={category.name}
+                  tabIndex="0"
+                  active={category.name === selected}
+                  onClick={() => onClickCategory(category.name)}
+                >
+                  <img src={category.img} alt="" />
+                  {category.text}
+                </CategoryItem>
+              );
+            })}
         </ul>
       </LifeCategory>
       <LifeContentSection>
         <SearchInput>
           <BiSearch />
+          <label htmlFor="search-community" hidden>
+            커뮤니티 글 검색
+          </label>
           <input
+            id="search-community"
             type="text"
             placeholder="키워드와 #태그 모두 검색할 수 있어요."
           />
         </SearchInput>
-        <h3>지금 가장 뜨거운 숨고픽🔥</h3>
+        {selected === 'ALL' && <h3>지금 가장 뜨거운 숨고픽🔥</h3>}
       </LifeContentSection>
     </LifeSection>
   );
@@ -42,8 +61,25 @@ const LifeCategory = styled.nav`
   display: flex;
   flex-direction: column;
   width: 200px;
-  ul li {
-    color: #a9a9a9;
+`;
+
+const CategoryItem = styled.li`
+  margin: 2px 0;
+  padding: 19px 20px;
+  border-radius: 8px;
+  color: #a9a9a9;
+  font-size: 14px;
+  cursor: pointer;
+  ${({ active }) =>
+    active &&
+    css`
+      background: #eafaf9;
+      color: #2d2d2d;
+      font-weight: 700;
+    `};
+  img {
+    width: 24px;
+    margin-right: 8px;
   }
 `;
 
