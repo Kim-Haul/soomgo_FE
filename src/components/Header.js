@@ -17,7 +17,7 @@ const Header = () => {
         <NavRight>
           <ul>
             <li>
-              <Link to="">커뮤니티</Link>
+              <Link to="/community/soomgo-life">커뮤니티</Link>
             </li>
             <li>
               <Link to="">마켓</Link>
@@ -43,7 +43,8 @@ const HeaderComponent = styled.header`
   display: flex;
   justify-content: center;
   width: 100vw;
-  padding: 0 10px;
+  border-bottom: 1px solid #f2f2f2;
+  background: #fff;
   z-index: 100;
 `;
 
@@ -73,6 +74,7 @@ const NavRight = styled.div`
   }
   button.btn-gosu {
     min-width: 80px;
+    height: 36px;
     padding: 6.5px 0;
     border-radius: 6px;
     font-size: 14px;
