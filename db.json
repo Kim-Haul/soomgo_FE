@@ -1,4 +1,27 @@
-{
+{ 
+  "posts": {
+  "id": "0",
+  "subject": "고수찾아요",
+  "title": "부평더샵센트럴시티 24평 입주청소",
+  "tagList": [
+    "입주청소",
+    "새집"
+  ],
+  "content": "입주청소 고수 찾습니다.",
+  "imgurlList": [
+    {
+      "imgurl": "첫 번째 이미지 유알엘입니다."
+    },
+    {
+      "imgurl": "두 번째 이미지 유알엘입니다."
+    }
+  ],
+  "likeCount": "0",
+  "liked": "boolean",
+  "commnetCount": "8",
+  "viewCount": "11",
+  "createdAt": "2022.07.27"
+},
   "comments": [
     {
       "id": 0,
