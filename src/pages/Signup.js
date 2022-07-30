@@ -49,7 +49,7 @@ const Signup = () => {
           autoComplete="off"
           isInvalid={!!errors.email}
           {...register('email', {
-            required: '올바른 이메일 주소를 입력해주세요.',
+            required: '이메일 주소를 입력해주세요.',
             pattern: /^\S+@\S+$/i,
           })}
         />
