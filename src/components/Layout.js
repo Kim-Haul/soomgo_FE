@@ -17,5 +17,7 @@ const Layout = () => {
 export default Layout;
 
 const Main = styled.main`
-  padding: 72px 0 30px;
+  max-width: 980px;
+  margin: 0 auto;
+  padding: 72px 10px 30px;
 `;
