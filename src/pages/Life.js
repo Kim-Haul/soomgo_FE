@@ -75,6 +75,10 @@ const LifeCategory = styled.nav`
   display: flex;
   flex-direction: column;
   width: 200px;
+  ul {
+    position: sticky;
+    top: 102px;
+  }
 `;
 
 const CategoryItem = styled.li`

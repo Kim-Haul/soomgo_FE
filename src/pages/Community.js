@@ -48,6 +48,8 @@ const BtnPost = styled.button`
   border-radius: 6px;
   font-weight: 500;
   svg {
+    width: 18px;
+    height: 18px;
     margin-left: 4px;
     fill: #fff;
   }
