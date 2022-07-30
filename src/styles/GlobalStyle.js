@@ -22,10 +22,15 @@ export const GlobalStyles = createGlobalStyle`
     text-decoration: none;
   }
 
-  ul {
+  ul, li {
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
   }
   
   button {
