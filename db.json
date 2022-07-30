@@ -1,0 +1,16 @@
+{
+  "comments": [
+    {
+      "id": 0,
+      "username": "김종수",
+      "content": "토요일 오후시간은 가능합니다.",
+      "createdAt": "2022.07.28"
+    },
+    {
+      "id": 1,
+      "username": "장복란",
+      "content": "청소하실 날짜가 언제인지요?",
+      "createdAt": "2022.07.28"
+    }
+  ]
+}
