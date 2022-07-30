@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
 import styled, { css } from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
-import { useSelector } from 'react-redux';
+import { categories } from '../data';
 
 import PostItem from '../components/PostItem';
 
 const Life = () => {
   const [selected, setSelected] = useState('ALL');
-  const categories = useSelector((state) => state.category);
   const onClickCategory = (name) => {
     window.scrollTo(0, 0);
     setSelected(name);
