@@ -19,5 +19,5 @@ export default Layout;
 const Main = styled.main`
   max-width: 980px;
   margin: 0 auto;
-  padding: 72px 10px 30px;
+  padding: 72px 5px 30px;
 `;

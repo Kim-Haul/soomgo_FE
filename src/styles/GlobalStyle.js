@@ -13,6 +13,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   h1 {
+    margin: 0;
     font-size: 34px;
   }
 
@@ -21,10 +22,15 @@ export const GlobalStyles = createGlobalStyle`
     text-decoration: none;
   }
 
-  ul {
+  ul, li {
     margin: 0;
     padding: 0;
     list-style: none;
+  }
+
+  p {
+    margin: 0;
+    padding: 0;
   }
   
   button {
