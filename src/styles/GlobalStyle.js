@@ -13,6 +13,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   h1 {
+    margin: 0;
     font-size: 34px;
   }
 
