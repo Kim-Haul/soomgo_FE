@@ -28,7 +28,7 @@ const Header = () => {
             <li>
               <Link to="/signup">회원가입</Link>
             </li>
-            <button>고수가입</button>
+            <button className="btn-gosu">고수가입</button>
           </ul>
         </NavRight>
       </Navbar>
@@ -69,6 +69,13 @@ const NavRight = styled.div`
   ul {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 24px;
+  }
+  button.btn-gosu {
+    min-width: 80px;
+    padding: 6.5px 0;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
   }
 `;
