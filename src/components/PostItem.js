@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 import { AiFillLike } from 'react-icons/ai';
 import { FaCommentDots } from 'react-icons/fa';
 
-const PostList = () => {
+const PostItem = () => {
   return (
-      <PostItem>
+      <Item>
         <Link to="posts/postid">
           <em>subject</em>
           <PostContent>
@@ -41,13 +41,13 @@ const PostList = () => {
             <small>createdAt</small>
           </PostFooter>
         </Link>
-      </PostItem>
+      </Item>
   );
 };
 
-export default PostList;
+export default PostItem;
 
-const PostItem = styled.li`
+const Item = styled.li`
   padding: 16px 8px;
   border-bottom: 1px solid #f4f4f4;
   font-size: 14px;

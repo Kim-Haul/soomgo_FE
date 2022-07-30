@@ -3,12 +3,13 @@ import styled, { css } from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 import { useSelector } from 'react-redux';
 
-import PostList from '../components/PostList';
+import PostItem from '../components/PostItem';
 
 const Life = () => {
   const [selected, setSelected] = useState('ALL');
   const categories = useSelector((state) => state.category);
   const onClickCategory = (name) => {
+    window.scrollTo(0, 0);
     setSelected(name);
     console.log(name); // delayed!
   };
@@ -54,11 +55,11 @@ const Life = () => {
         {/* TODO: 조회수 순 포스트 캐러셀 추가 */}
 
         <ul>
-          <PostList />
-          <PostList />
-          <PostList />
-          <PostList />
-          <PostList />
+          {Array(8)
+            .fill()
+            .map((_, i) => (
+              <PostItem key={i} />
+            ))}
         </ul>
       </LifeContentSection>
     </LifeSection>
