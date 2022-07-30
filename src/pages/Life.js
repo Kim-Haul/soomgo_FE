@@ -3,6 +3,8 @@ import styled, { css } from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 import { useSelector } from 'react-redux';
 
+import PostList from '../components/PostList';
+
 const Life = () => {
   const [selected, setSelected] = useState('ALL');
   const categories = useSelector((state) => state.category);
@@ -14,6 +16,7 @@ const Life = () => {
   return (
     <LifeSection>
       <h2 hidden>숨고생활</h2>
+
       <LifeCategory>
         <ul>
           <h3 hidden>카테고리 목록</h3>
@@ -33,6 +36,7 @@ const Life = () => {
             })}
         </ul>
       </LifeCategory>
+
       <LifeContentSection>
         <SearchInput>
           <BiSearch />
@@ -45,7 +49,17 @@ const Life = () => {
             placeholder="키워드와 #태그 모두 검색할 수 있어요."
           />
         </SearchInput>
+
         {selected === 'ALL' && <h3>지금 가장 뜨거운 숨고픽🔥</h3>}
+        {/* TODO: 조회수 순 포스트 캐러셀 추가 */}
+
+        <ul>
+          <PostList />
+          <PostList />
+          <PostList />
+          <PostList />
+          <PostList />
+        </ul>
       </LifeContentSection>
     </LifeSection>
   );
@@ -88,7 +102,6 @@ const LifeContentSection = styled.section`
   max-width: 600px;
   margin-left: 85px;
   h3 {
-    margin-top: 40px;
     font-size: 18px;
     font-weight: 700;
   }
@@ -98,6 +111,7 @@ const SearchInput = styled.div`
   display: flex;
   align-items: center;
   padding: 8px 16px;
+  margin-bottom: 40px;
   background: #f4f4f4;
   border-radius: 8px;
   svg {
