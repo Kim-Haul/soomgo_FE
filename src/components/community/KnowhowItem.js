@@ -1,23 +1,25 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
-const KnowhowItem = () => {
+const KnowhowItem = ({ post }) => {
   return (
     <KnowhowArticle>
       <Link to="posts/postid">
-        <img src="https://pbs.twimg.com/media/EtHubB8UUAEkgbN.jpg" alt="" />
-        <strong>
-          노하우 제목 Lorem ipsum dolor sit amet consectetur. Lorem, ipsum dolor
-          sit amet consectetur adipisicing.
-        </strong>
-        <p>작성자</p>
+        <img src={post.imgurlList[0]} alt="" />
+        <strong>{post.title}</strong>
+        <p>{post.writer}</p>
       </Link>
     </KnowhowArticle>
   );
 };
 
 export default KnowhowItem;
+
+KnowhowItem.propTypes = {
+  post: PropTypes.object,
+};
 
 const KnowhowArticle = styled.article`
   display: flex;

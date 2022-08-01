@@ -1,8 +1,22 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
+import apis from '../../api/index';
+
 const Header = () => {
+  // useEffect(() => {
+  //   const getAuthInfo = async () => {
+  //     try {
+  //       const res = await apis.getAuth();
+  //       console.log(res);
+  //     } catch (e) {
+  //       console.log(e);
+  //     }
+  //   };
+  //   getAuthInfo();
+  // }, []);
+
   return (
     <HeaderComponent>
       <Navbar>
