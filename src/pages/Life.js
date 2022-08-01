@@ -7,7 +7,20 @@ import { useQuery } from '@tanstack/react-query';
 
 import PostItem from '../components/PostItem';
 
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 const Life = () => {
+  // 캐러셀 세팅
+  const settings = {
+    dots: false,
+    infinite: false,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+  };
+
   const [selected, setSelected] = useState('ALL');
   const onClickCategory = (name) => {
     window.scrollTo(0, 0);
@@ -66,6 +79,27 @@ const Life = () => {
 
         {selected === 'ALL' && <h3>지금 가장 뜨거운 숨고픽🔥</h3>}
         {/* TODO: 조회수 순 포스트 캐러셀 추가 */}
+        {selected == 'ALL' ? (
+          <Wrap>
+            <StyledSlider {...settings}>
+              <div>
+                <SliderListF></SliderListF>
+              </div>
+              <div>
+                <SliderList></SliderList>
+              </div>
+              <div>
+                <SliderList></SliderList>
+              </div>
+              <div>
+                <SliderList></SliderList>
+              </div>
+              <div>
+                <SliderList></SliderList>
+              </div>
+            </StyledSlider>
+          </Wrap>
+        ) : null}
 
         <ul>
           {postList.data.map((post) => (
@@ -145,4 +179,36 @@ const SearchInput = styled.div`
       color: #b5b5b5;
     }
   }
+`;
+
+const Wrap = styled.div`
+  margin: 20px 0px;
+`;
+
+const StyledSlider = styled(Slider)`
+  height: 180px;
+  width: 100%;
+  position: relative;
+  .slick-prev:before,
+  .slick-next:before {
+    color: black;
+  }
+  .slick-slide div {
+    //슬라이더  컨텐츠
+    cursor: pointer;
+  }
+`;
+
+const SliderListF = styled.div`
+  height: 180px;
+  border-radius: 20px;
+  background-color: #00c7ae;
+  margin-right: 10px;
+`;
+
+const SliderList = styled.div`
+  height: 180px;
+  border-radius: 20px;
+  background-color: #f4f4f4;
+  margin-right: 10px;
 `;
