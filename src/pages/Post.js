@@ -1,17 +1,38 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useForm } from 'react-hook-form';
 
 import { categories } from '../data';
 import { MdAddAPhoto } from 'react-icons/md';
 
 const Post = () => {
   const [isGosu, setIsGosu] = useState(true);
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid },
+  } = useForm({
+    mode: 'all',
+  });
+
+  const onSubmitPost = (data) => {
+    console.log(data);
+  };
+
   return (
     <section>
-      <form>
+      <form onSubmit={handleSubmit(onSubmitPost)}>
         <Row>
-          <select>
-            <option disabled>주제 선택</option>
+          <select
+            name="subject"
+            id="subject"
+            {...register('subject', {
+              required: true,
+            })}
+          >
+            <option selected disabled value="">
+              주제 선택
+            </option>
             {categories.slice(1).map((cat) => (
               <option key={cat.name} value={cat.name}>
                 {cat.text}
@@ -19,7 +40,7 @@ const Post = () => {
             ))}
             {isGosu && <option>고수의노하우</option>}
           </select>
-          <button>등록</button>
+          <button disabled={!isValid}>등록</button>
         </Row>
 
         <Row className="row-photo">
@@ -32,6 +53,10 @@ const Post = () => {
             type="text"
             id="input-title"
             placeholder="제목을 입력해주세요."
+            autoComplete="off"
+            {...register('title', {
+              required: true,
+            })}
           />
         </Row>
 
@@ -48,7 +73,11 @@ const Post = () => {
         <Row>
           <textarea
             wrap="hard"
+            spellCheck="false"
             placeholder={`요청 서비스 정보를 공유하거나 숨고인과 고수님들에게 물어보세요.\n주제에 맞지 않는 글이나 커뮤니티 이용정책에 위배되어 일정 수 이상 신고를 받는 경우 글이 숨김 및 삭제될 수 있습니다.`}
+            {...register('content', {
+              required: true,
+            })}
           />
         </Row>
       </form>
