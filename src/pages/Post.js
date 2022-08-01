@@ -1,12 +1,21 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { useForm } from 'react-hook-form';
+import { storage } from '../shared/firebase';
+import {
+  uploadBytes,
+  ref,
+  getDownloadURL,
+  deleteObject,
+} from 'firebase/storage';
 
 import { categories } from '../data';
 import { MdAddAPhoto } from 'react-icons/md';
+import { IoClose } from 'react-icons/io5';
 
 const Post = () => {
   const [isGosu, setIsGosu] = useState(true);
+  const [imgList, setImgList] = useState([]);
   const {
     register,
     handleSubmit,
@@ -17,6 +26,32 @@ const Post = () => {
 
   const onSubmitPost = (data) => {
     console.log(data);
+    // TODO: imgList.map(v => v.src)
+  };
+
+  const previewImage = async (e) => {
+    if (imgList.length >= 2) {
+      alert('이미지는 2장까지 업로드할 수 있습니다.');
+      return;
+    }
+    const image = e.target.files[0];
+    const uploadedFile = await uploadBytes(
+      ref(storage, `images/${image.name}`),
+      image,
+    );
+    const imageUrl = await getDownloadURL(uploadedFile.ref);
+    setImgList((state) => [...state, { name: image.name, src: imageUrl }]);
+  };
+
+  const onClickRemove = async (imgName) => {
+    setImgList(imgList.filter((img) => img.name !== imgName));
+    try {
+      const imgRef = ref(storage, `images/${imgName}`);
+      const res = await deleteObject(imgRef);
+      console.log(res);
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   return (
@@ -26,11 +61,12 @@ const Post = () => {
           <select
             name="subject"
             id="subject"
+            defaultValue=""
             {...register('subject', {
               required: true,
             })}
           >
-            <option selected disabled value="">
+            <option disabled value="">
               주제 선택
             </option>
             {categories.slice(1).map((cat) => (
@@ -44,8 +80,17 @@ const Post = () => {
         </Row>
 
         <Row className="row-photo">
-          <MdAddAPhoto />
-          <span>0/2</span>
+          <label htmlFor="postImgs">
+            <MdAddAPhoto />
+          </label>
+          <span>{imgList.length}/2</span>
+          <input
+            id="postImgs"
+            type="file"
+            accept="image/*"
+            onChange={(e) => previewImage(e)}
+            hidden
+          />
         </Row>
 
         <Row>
@@ -68,7 +113,17 @@ const Post = () => {
           />
         </Row>
 
-        <RowPreview>사진 미리보기</RowPreview>
+        <RowPreview>
+          {imgList &&
+            imgList.map((img) => (
+              <PreviewImg key={img.name}>
+                <img src={img.src} alt="" />
+                <button onClick={() => onClickRemove(img.name)}>
+                  <IoClose alt="첨부한 사진 삭제" />
+                </button>
+              </PreviewImg>
+            ))}
+        </RowPreview>
 
         <Row>
           <textarea
@@ -157,5 +212,32 @@ const Row = styled.div`
 `;
 
 const RowPreview = styled.div`
+  display: flex;
+  gap: 12px;
   padding-top: 12px;
+`;
+
+const PreviewImg = styled.div`
+  position: relative;
+  margin-top: 10px;
+  img {
+    width: 80px;
+    height: 80px;
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  button {
+    position: absolute;
+    top: -9px;
+    left: 65px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3px;
+    border-radius: 50%;
+    background: #ff5861;
+    svg {
+      fill: #fff;
+    }
+  }
 `;
