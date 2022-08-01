@@ -7,19 +7,6 @@ import { AiFillLike } from 'react-icons/ai';
 import { FaCommentDots } from 'react-icons/fa';
 
 const PostItem = ({ post }) => {
-  // const {
-  //   id,
-  //   subject,
-  //   title,
-  //   content,
-  //   tagList,
-  //   likeCount,
-  //   commentCount,
-  //   createdAt,
-  // } = post;
-
-  // console.log(post);
-
   return (
     <Item>
       <Link to={`posts/${post.id}`}>

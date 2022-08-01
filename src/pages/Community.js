@@ -1,9 +1,13 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { RiPencilFill } from 'react-icons/ri';
 import { Outlet, NavLink } from 'react-router-dom';
 
 const Community = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <>
       <CommunityHeader>
