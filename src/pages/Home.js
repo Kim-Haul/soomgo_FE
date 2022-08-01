@@ -1,5 +1,6 @@
 import React from 'react';
 import apis from '../api';
+import MainSlider from '../components/MainSlider';
 
 const Home = () => {
   const getAuthInfo = async () => {
@@ -12,9 +13,12 @@ const Home = () => {
   };
 
   return (
-    <div>
-      <button onClick={getAuthInfo}>auth 불러오기</button>
-    </div>
+    <>
+      <MainSlider />
+      <div>
+        <button onClick={getAuthInfo}>auth 불러오기</button>
+      </div>
+    </>
   );
 };
 
