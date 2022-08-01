@@ -5,15 +5,18 @@ export const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    color: #323232;
   }
 
   body {
     font-family: 'Noto Sans KR', sans-serif;
+    color: #323232;
+  }
+
+  h1, h2 {
+    margin: 0;
   }
 
   h1 {
-    margin: 0;
     font-size: 34px;
   }
 
