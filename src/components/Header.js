@@ -80,4 +80,8 @@ const NavRight = styled.div`
     font-size: 14px;
     font-weight: 500;
   }
+
+  @media (max-width: 800px) {
+    display: none;
+  }
 `;
