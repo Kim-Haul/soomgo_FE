@@ -36,7 +36,6 @@ const Home = () => {
   return (
     <>
       <MainSlider />
-
       <MainCategoryList>
         {mainCategories.map((cat) => (
           <li key={cat.id}>
@@ -69,7 +68,6 @@ const Home = () => {
           ))}
         </CurationList>
       </CurationSection>
-
       <CurationSection>
         <header>
           <h2>고수의 노하우를 알아보세요</h2>
@@ -79,7 +77,6 @@ const Home = () => {
           </Link>
         </header>
       </CurationSection>
-
       <div>
         <button onClick={getAuthInfo}>auth 불러오기</button>
       </div>
