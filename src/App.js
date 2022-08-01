@@ -8,14 +8,15 @@ import Signup from './pages/Signup';
 import Accountinfo from './pages/Accountinfo';
 import Mypage from './pages/Mypage';
 import Detail from './pages/Detail';
-import Community from './pages/Community';
+import Community from './components/community/CommunityLayout';
 import Life from './pages/Life';
 import Knowhow from './pages/Knowhow';
 import Post from './pages/Post';
 import Bookmarkclip from './pages/Bookmarkclip';
-import Mypageactivity from './pages/Mypageactivity';
+import Mypageactivity from './components/Mypageactivity';
 import Mypost from './pages/Mypost';
 import MyComment from './pages/MyComment';
+import KnowhowDetail from './pages/KnowhowDetail';
 
 const App = () => {
   return (
@@ -43,6 +44,10 @@ const App = () => {
           <Route
             path="/community/soomgo-life/posts/:postId"
             element={<Detail />}
+          />
+          <Route
+            path="/community/pro-knowhow/posts/:postId"
+            element={<KnowhowDetail />}
           />
           <Route path="/community/soomgo-life/post" element={<Post />} />
         </Route>

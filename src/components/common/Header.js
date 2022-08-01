@@ -34,7 +34,7 @@ const Header = () => {
               <Link to="/community/soomgo-life">커뮤니티</Link>
             </li>
             <li>
-              <Link to="">북마크</Link>
+              <Link to="/mypage/bookmark">북마크</Link>
             </li>
             <li>
               <Link to="/login">로그인</Link>
