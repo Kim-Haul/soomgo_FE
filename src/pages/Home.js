@@ -20,18 +20,21 @@ const Home = () => {
     }
   };
 
-  const { data: postList } = useQuery(['postList'], getPostData, {
-    refetchOnWindowFocus: false,
-  });
-
-  const getAuthInfo = async () => {
+  const getKnowhowData = () => {
     try {
-      const res = await apis.getAuth();
-      console.log(res);
+      const res = axios.get('http://localhost:5001/knowhow');
+      return res;
     } catch (e) {
       console.log(e);
     }
   };
+
+  const { data: postList } = useQuery(['postList'], getPostData, {
+    refetchOnWindowFocus: false,
+  });
+  const { data: knowhowList } = useQuery(['knowhowList'], getKnowhowData, {
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <>
@@ -73,16 +76,25 @@ const Home = () => {
       <CurationSection>
         <header>
           <h2>고수의 노하우를 알아보세요</h2>
-          <Link to="/community/pro-knowhow">
+          <Link to="/community/pro-knowhow" className="view-all">
             전체보기
             <AiOutlineRight />
           </Link>
         </header>
+        <KnowhowList>
+          {knowhowList.data.slice(0, 4).map((knowhow) => (
+            <li key={knowhow.id}>
+              <Link to="">
+                <div>
+                  <img src={knowhow.imgurlList[0]} alt="" />
+                </div>
+                <strong>{knowhow.title}</strong>
+                <em>{knowhow.writer}</em>
+              </Link>
+            </li>
+          ))}
+        </KnowhowList>
       </CurationSection>
-
-      <div>
-        <button onClick={getAuthInfo}>auth 불러오기</button>
-      </div>
     </>
   );
 };
@@ -183,5 +195,39 @@ const CurationContent = styled(Link)`
     width: 64px;
     height: 64px;
     border-radius: 8px;
+  }
+`;
+
+const KnowhowList = styled.ul`
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin: 30px 0 50px;
+  li a {
+    div {
+      overflow: hidden;
+      border-radius: 8px;
+      margin-bottom: 5px;
+    }
+    &:hover {
+      img {
+        transform: scale(110%);
+      }
+    }
+  }
+  img {
+    width: 100%;
+    object-fit: cover;
+    transition: 0.4s all cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  strong {
+    display: flex;
+    align-items: center;
+    height: 2.3em;
+    line-height: 1em;
+  }
+  em {
+    color: #737373;
+    font-size: 14px;
   }
 `;
