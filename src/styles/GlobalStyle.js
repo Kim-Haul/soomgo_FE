@@ -12,7 +12,7 @@ export const GlobalStyles = createGlobalStyle`
     color: #323232;
   }
 
-  h1, h2 {
+  h1, h2, address {
     margin: 0;
   }
 

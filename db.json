@@ -1,7 +1,7 @@
 {
   "posts": [
     {
-      "id": "0",
+      "id": 0,
       "subject": "고수찾아요",
       "title": "부평더샵센트럴시티 24평 입주청소",
       "tagList": ["입주청소", "새집"],
@@ -14,14 +14,14 @@
           "imgurl": "두 번째 이미지 유알엘입니다."
         }
       ],
-      "likeCount": "0",
+      "likeCount": 0,
       "liked": "boolean",
-      "commentCount": "8",
-      "viewCount": "11",
+      "commentCount": 8,
+      "viewCount": 11,
       "createdAt": "2022.07.27"
     },
     {
-      "id": "1",
+      "id": 1,
       "subject": "궁금해요",
       "title": "화장실 배수구 마감@@",
       "tagList": ["화장실수리", "배수구", "전세집수리"],
@@ -34,14 +34,14 @@
           "imgurl": "두 번째 이미지 유알엘입니다."
         }
       ],
-      "likeCount": "3",
+      "likeCount": 3,
       "liked": "boolean",
-      "commentCount": "5",
-      "viewCount": "11",
+      "commentCount": 5,
+      "viewCount": 11,
       "createdAt": "2022.07.27"
     },
     {
-      "id": "2",
+      "id": 2,
       "subject": "궁금해요",
       "title": "혹시…이 문고리 어디서 파는지 아시는분 계실까요? 긴 제목 긴 제목 긴 제목",
       "tagList": ["문고리", "문고리교체"],
@@ -54,14 +54,14 @@
           "imgurl": "두 번째 이미지 유알엘입니다."
         }
       ],
-      "likeCount": "1",
+      "likeCount": 1,
       "liked": "boolean",
-      "commentCount": "1",
-      "viewCount": "779",
+      "commentCount": 1,
+      "viewCount": 779,
       "createdAt": "2022.07.28"
     },
     {
-      "id": "3",
+      "id": 3,
       "subject": "얼마예요",
       "title": "벽걸이에어컨",
       "tagList": ["에어컨설치"],
@@ -74,14 +74,14 @@
           "imgurl": "두 번째 이미지 유알엘입니다."
         }
       ],
-      "likeCount": "0",
+      "likeCount": 0,
       "liked": "boolean",
-      "commentCount": "0",
-      "viewCount": "13",
+      "commentCount": 0,
+      "viewCount": 13,
       "createdAt": "2022.08.01"
     },
     {
-      "id": "4",
+      "id": 4,
       "subject": "고수찾아요",
       "title": "목공고수님 찾습니다",
       "tagList": ["거실확장"],
@@ -94,11 +94,53 @@
           "imgurl": "두 번째 이미지 유알엘입니다."
         }
       ],
-      "likeCount": "0",
+      "likeCount": 0,
       "liked": "boolean",
-      "commentCount": "0",
-      "viewCount": "6",
+      "commentCount": 0,
+      "viewCount": 6,
       "createdAt": "2022.08.01"
+    }
+  ],
+  "knowhow": [
+    {
+      "id": 0,
+      "subject": "KNOWHOW",
+      "title": "자영업자의 절반이 놓치고 있는 '이' 보험",
+      "writer": "신세희 컨설턴트",
+      "content": "안녕하세요. 프라임에셋 소속 보험 전문 컨설턴트 신세희입니다.\n절대적으로 완벽하게 좋은 보험은 세상에 없습니다. 나에게 맞는 보험만이 있을 뿐입니다.\n나에게 딱 맞는 보험을 알아보는 기준이 무엇인지 보험 컨설팅 노하우를 알려드리겠습니다.",
+      "imgurlList": ["https://pbs.twimg.com/media/EtHubB8UUAEkgbN.jpg"],
+      "bookmark": false,
+      "createdAt": "2022.07.01"
+    },
+    {
+      "id": 1,
+      "subject": "KNOWHOW",
+      "title": "요통은 왜 생길까요?!",
+      "writer": "신체교정 전문가",
+      "content": "오늘은 흔히 일어나는 통증 중 요추 통증에 대해서 알아보겠습니다.",
+      "imgurlList": ["https://pbs.twimg.com/media/EtHubB8UUAEkgbN.jpg"],
+      "bookmark": true,
+      "createdAt": "2022.07.12"
+    },
+    {
+      "id": 2,
+      "subject": "KNOWHOW",
+      "title": "춤을 배우고 싶다면 이것부터!",
+      "writer": "댄스 마스터",
+      "content": "제가 생각했을 때 춤을 배우기 시작함과 동시에 필수적으로 갖춰야 하는 능력에 대해서 말씀드리겠습니다.",
+      "imgurlList": ["https://pbs.twimg.com/media/EtHubB8UUAEkgbN.jpg"],
+      "bookmark": false,
+      "createdAt": "2022.07.21"
+    },
+    {
+      "id": 3,
+      "subject": "KNOWHOW",
+      "title": "인테리어 시공 순서 정하는 꿀팁!",
+      "writer": "라인폴딩도어",
+      "content": "제가 생각했을 때 춤을 배우기 시작함과 동시에 필수적으로 갖춰야 하는 능력에 대해서 말씀드리겠습니다.",
+      "imgurlList": ["https://pbs.twimg.com/media/EtHubB8UUAEkgbN.jpg"],
+      "bookmark": true,
+      "createdAt": "2022.07.27"
     }
   ],
   "comments": [

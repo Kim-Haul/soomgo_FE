@@ -38,7 +38,7 @@ const Life = () => {
   };
 
   const { data: postList } = useQuery(['postList'], getPostData);
-  console.log(postList.data);
+  // console.log(postList.data);
 
   return (
     <LifeSection>
