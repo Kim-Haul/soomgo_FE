@@ -16,6 +16,9 @@ import { IoClose } from 'react-icons/io5';
 const Post = () => {
   const [isGosu, setIsGosu] = useState(true);
   const [imgList, setImgList] = useState([]);
+  const [tagList, setTagList] = useState([]);
+  const [tag, setTag] = useState('');
+  const [isShown, setIsShown] = useState(false);
   const {
     register,
     handleSubmit,
@@ -25,8 +28,18 @@ const Post = () => {
   });
 
   const onSubmitPost = (data) => {
-    console.log(data);
-    // TODO: imgList.map(v => v.src)
+    const newData = {
+      subject: data.subject,
+      title: data.title,
+      tagList,
+      content: data.content,
+      imgurlList: imgList.map((v) => v.src),
+    };
+    console.log(newData);
+  };
+
+  const checkKeyDown = (e) => {
+    if (e.key === 'Enter') e.preventDefault();
   };
 
   const previewImage = async (e) => {
@@ -43,20 +56,49 @@ const Post = () => {
     setImgList((state) => [...state, { name: image.name, src: imageUrl }]);
   };
 
-  const onClickRemove = async (imgName) => {
+  const removeImage = async (imgName) => {
     setImgList(imgList.filter((img) => img.name !== imgName));
     try {
       const imgRef = ref(storage, `images/${imgName}`);
-      const res = await deleteObject(imgRef);
-      console.log(res);
+      await deleteObject(imgRef);
     } catch (e) {
       console.log(e);
     }
   };
 
+  const addTag = (e) => {
+    setTag(e.target.value);
+  };
+
+  const removeTag = (i) => {
+    setTagList((state) => state.filter((_, idx) => state[idx] !== state[i]));
+    // FIXME: 성능최적화 필요
+  };
+
+  const handleKeyUp = (e) => {
+    e.target.style.width = e.target.value.length + 0.7 + 'em';
+    if (e.key === 'Enter' || e.key === ' ') {
+      handleTags();
+      e.target.style.width = '88px';
+    }
+  };
+
+  const handleTags = () => {
+    if (!tag || tag === ' ') {
+      setIsShown(false);
+    } else {
+      tagList.length === 4 && setIsShown(false);
+      setTagList((state) => [...state, tag]);
+    }
+    setTag('');
+  };
+
   return (
     <section>
-      <form onSubmit={handleSubmit(onSubmitPost)}>
+      <form
+        onSubmit={handleSubmit(onSubmitPost)}
+        onKeyDown={(e) => checkKeyDown(e)}
+      >
         <Row>
           <select
             name="subject"
@@ -74,7 +116,7 @@ const Post = () => {
                 {cat.text}
               </option>
             ))}
-            {isGosu && <option>고수의노하우</option>}
+            {isGosu && <option value="KNOWHOW">고수의노하우</option>}
           </select>
           <button disabled={!isValid}>등록</button>
         </Row>
@@ -105,20 +147,50 @@ const Post = () => {
           />
         </Row>
 
-        <Row>
-          <input
-            type="text"
-            id="input-title"
-            placeholder="태그를 입력해주세요."
-          />
-        </Row>
+        {/* TODO: 노하우 카테고리 선택했을 때 안보이기 */}
+        <RowTag
+          onClick={() => {
+            tagList.length < 5 && setIsShown(true);
+          }}
+        >
+          <ul>
+            {tagList.map((v, i) => (
+              <TagItem key={i}>
+                # {v}
+                <button onClick={() => removeTag(i)}>
+                  <IoClose />
+                </button>
+              </TagItem>
+            ))}
+            {isShown ? (
+              <TagItem>
+                #
+                <input
+                  type="text"
+                  id="input-title"
+                  value={tag}
+                  onChange={(e) => addTag(e)}
+                  onKeyUp={(e) => handleKeyUp(e)}
+                  onBlur={() => handleTags()}
+                  autoComplete="off"
+                  placeholder="연관 태그 입력"
+                  autoFocus
+                />
+              </TagItem>
+            ) : tagList.length === 0 ? (
+              <TagPlaceholder>
+                #인테리어시공 #신림동 #최대5개태그
+              </TagPlaceholder>
+            ) : null}
+          </ul>
+        </RowTag>
 
         <RowPreview>
           {imgList &&
             imgList.map((img) => (
               <PreviewImg key={img.name}>
                 <img src={img.src} alt="" />
-                <button onClick={() => onClickRemove(img.name)}>
+                <button onClick={() => removeImage(img.name)}>
                   <IoClose alt="첨부한 사진 삭제" />
                 </button>
               </PreviewImg>
@@ -132,6 +204,7 @@ const Post = () => {
             placeholder={`요청 서비스 정보를 공유하거나 숨고인과 고수님들에게 물어보세요.\n주제에 맞지 않는 글이나 커뮤니티 이용정책에 위배되어 일정 수 이상 신고를 받는 경우 글이 숨김 및 삭제될 수 있습니다.`}
             {...register('content', {
               required: true,
+              minLength: 2,
             })}
           />
         </Row>
@@ -155,8 +228,8 @@ const Row = styled.div`
   &.row-photo {
     justify-content: flex-start;
     padding: 16px 10px;
-    background: #fafafa;
     border-top: 1px solid #f4f4f4;
+    background: #fafafa;
     svg {
       width: 20px;
       height: 20px;
@@ -188,10 +261,10 @@ const Row = styled.div`
     }
   }
   #input-title {
+    width: 100%;
     padding: 4px 0;
     border: none;
     outline: none;
-    width: 100%;
     font-size: 14px;
     font-weight: 500;
     letter-spacing: -0.3px;
@@ -203,8 +276,8 @@ const Row = styled.div`
     width: 100%;
     height: 325px;
     padding: 10px 0;
-    resize: none;
     font-size: 14px;
+    resize: none;
     &::placeholder {
       color: #888;
     }
@@ -240,4 +313,47 @@ const PreviewImg = styled.div`
       fill: #fff;
     }
   }
+`;
+
+const RowTag = styled.div`
+  overflow-x: auto;
+  display: flex;
+  width: 100%;
+  padding: 13px 0;
+  border-bottom: 1px solid #f4f4f4;
+  ul {
+    display: flex;
+    gap: 8px;
+    button {
+      padding: 0;
+      background: none;
+      color: #a9a9a9;
+      font-size: 15px;
+    }
+  }
+`;
+
+const TagItem = styled.li`
+  width: max-content;
+  padding: 6px 8px 6px 12px;
+  border-radius: 8px;
+  background: #f4f4f4;
+  font-size: 14px;
+  letter-spacing: -0.3px;
+  input {
+    display: inline-block;
+    width: 88px;
+    margin-left: 4px;
+    padding: 0;
+    border: none;
+    background: none;
+    outline: none;
+    transition: all 0.1s ease-out;
+  }
+`;
+
+const TagPlaceholder = styled.p`
+  padding: 6px 0;
+  color: #888;
+  font-size: 14px;
 `;
