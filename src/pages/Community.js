@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { RiPencilFill } from 'react-icons/ri';
-import { Outlet, NavLink } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
 
 const Community = () => {
+  const navigate = useNavigate();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
@@ -12,8 +13,7 @@ const Community = () => {
     <>
       <CommunityHeader>
         <h1>커뮤니티</h1>
-        <BtnPost>
-          {/* TODO: 글쓰기 페이지 링크 추가 */}
+        <BtnPost onClick={() => navigate('/community/soomgo-life/post')}>
           글쓰기
           <RiPencilFill />
         </BtnPost>
