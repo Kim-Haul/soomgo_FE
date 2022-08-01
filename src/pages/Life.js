@@ -15,7 +15,7 @@ const Life = () => {
     console.log(name); // delayed!
   };
 
-  const getDetailData = () => {
+  const getPostData = () => {
     try {
       const res = axios.get('http://localhost:5001/posts');
       return res;
@@ -24,7 +24,7 @@ const Life = () => {
     }
   };
 
-  const { data: postList } = useQuery(['postList'], getDetailData);
+  const { data: postList } = useQuery(['postList'], getPostData);
   console.log(postList.data);
 
   return (
