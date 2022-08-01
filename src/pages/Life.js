@@ -5,7 +5,7 @@ import { categories } from '../data';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
-import PostItem from '../components/PostItem';
+import PostItem from '../components/community/PostItem';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
@@ -77,29 +77,31 @@ const Life = () => {
           />
         </SearchInput>
 
-        {selected === 'ALL' && <h3>지금 가장 뜨거운 숨고픽🔥</h3>}
         {/* TODO: 조회수 순 포스트 캐러셀 추가 */}
-        {selected == 'ALL' ? (
-          <Wrap>
-            <StyledSlider {...settings}>
-              <div>
-                <SliderListF></SliderListF>
-              </div>
-              <div>
-                <SliderList></SliderList>
-              </div>
-              <div>
-                <SliderList></SliderList>
-              </div>
-              <div>
-                <SliderList></SliderList>
-              </div>
-              <div>
-                <SliderList></SliderList>
-              </div>
-            </StyledSlider>
-          </Wrap>
-        ) : null}
+        {selected === 'ALL' && (
+          <>
+            <h3>지금 가장 뜨거운 숨고픽🔥</h3>
+            <Wrap>
+              <StyledSlider {...settings}>
+                <div>
+                  <SliderListF></SliderListF>
+                </div>
+                <div>
+                  <SliderList></SliderList>
+                </div>
+                <div>
+                  <SliderList></SliderList>
+                </div>
+                <div>
+                  <SliderList></SliderList>
+                </div>
+                <div>
+                  <SliderList></SliderList>
+                </div>
+              </StyledSlider>
+            </Wrap>
+          </>
+        )}
 
         <ul>
           {postList.data.map((post) => (

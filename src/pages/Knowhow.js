@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import KnowhowItem from '../components/KnowhowItem';
+import KnowhowItem from '../components/community/KnowhowItem';
 
 const Knowhow = () => {
   return (

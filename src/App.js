@@ -1,7 +1,7 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { GlobalStyles } from './styles/GlobalStyle';
-import Layout from './components/Layout';
+import Layout from './components/common/Layout';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import Signup from './pages/Signup';
