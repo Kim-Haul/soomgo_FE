@@ -21,7 +21,7 @@ const MainSlider = () => {
             ? setActiveIndex(8)
             : setActiveIndex(swiper.activeIndex);
         }}
-        onSwiper={(swiper) => console.log(swiper)}
+        // onSwiper={(swiper) => console.log(swiper)}
         loop={true}
         navigation
         autoplay={{ delay: 2500, pauseOnMouseEnter: false }}
