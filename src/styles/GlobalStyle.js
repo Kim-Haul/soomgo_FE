@@ -21,7 +21,7 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   a {
-    color:inherit;
+    color: inherit;
     text-decoration: none;
   }
 
@@ -48,5 +48,11 @@ export const GlobalStyles = createGlobalStyle`
     &:hover {
       filter: brightness(90%);
     }
+  }
+
+  select, textarea {
+    background: none;
+    border: none;
+    outline: none;
   }
 `;

@@ -11,6 +11,7 @@ import Detail from './pages/Detail';
 import Community from './pages/Community';
 import Life from './pages/Life';
 import Knowhow from './pages/Knowhow';
+import Post from './pages/Post';
 import Bookmarkclip from './pages/Bookmarkclip';
 import Mypageactivity from './pages/Mypageactivity';
 import Mypost from './pages/Mypost';
@@ -43,6 +44,7 @@ const App = () => {
             path="/community/soomgo-life/posts/:postId"
             element={<Detail />}
           />
+          <Route path="/community/soomgo-life/post" element={<Post />} />
         </Route>
       </Routes>
     </>
