@@ -46,10 +46,10 @@ const Home = () => {
         ))}
       </MainCategoryList>
 
-      <MainCommunity>
+      <CurationSection>
         <header>
           <h2>숨고 커뮤니티에 물어보세요</h2>
-          <Link to="/community/soomgo-life">
+          <Link to="/community/soomgo-life" className="view-all">
             전체보기
             <AiOutlineRight />
           </Link>
@@ -57,7 +57,7 @@ const Home = () => {
         <CurationList>
           {postList.data.slice(0, 6).map((post) => (
             <li key={post.id}>
-              <CurationContent>
+              <CurationContent to={`/community/soomgo-life/posts/${post.id}`}>
                 <div>
                   <em>{post.subject}</em>
                   <strong>{post.title}</strong>
@@ -68,7 +68,17 @@ const Home = () => {
             </li>
           ))}
         </CurationList>
-      </MainCommunity>
+      </CurationSection>
+
+      <CurationSection>
+        <header>
+          <h2>고수의 노하우를 알아보세요</h2>
+          <Link to="/community/pro-knowhow">
+            전체보기
+            <AiOutlineRight />
+          </Link>
+        </header>
+      </CurationSection>
 
       <div>
         <button onClick={getAuthInfo}>auth 불러오기</button>
@@ -104,7 +114,7 @@ const MainCategoryList = styled.ul`
   }
 `;
 
-const MainCommunity = styled.section`
+const CurationSection = styled.section`
   header {
     display: flex;
     justify-content: space-between;
@@ -114,7 +124,7 @@ const MainCommunity = styled.section`
     font-size: 24px;
     font-weight: 700;
   }
-  a {
+  a.view-all {
     display: flex;
     align-items: center;
     color: #00c7ae;
@@ -129,42 +139,43 @@ const CurationList = styled.ul`
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
-  gap: 0 35px;
-  height: 360px;
+  gap: 0 40px;
+  height: 309px;
   margin-bottom: 80px;
   li {
     display: flex;
-    width: 40%;
-    max-width: 480px;
+    width: calc(50% - 40px);
   }
 `;
 
-const CurationContent = styled.div`
+const CurationContent = styled(Link)`
   display: flex;
-  width: 480px;
-  max-width: 480px;
+  width: 100%;
   justify-content: space-between;
   padding: 14px 2px 16px;
   border-bottom: 1px solid #f4f4f4;
   div {
+    overflow: hidden;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    width: 416px;
+    flex: 1;
     font-size: 14px;
+    white-space: nowrap;
     em {
       font-weight: 500;
       font-style: normal;
     }
     strong {
+      overflow: hidden;
       margin: 5px 0 4px;
       font-weight: 500;
+      text-overflow: ellipsis;
     }
     p {
       overflow: hidden;
-      color: #737373;
-      white-space: nowrap;
       text-overflow: ellipsis;
+      color: #737373;
     }
   }
   img {

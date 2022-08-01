@@ -69,8 +69,8 @@ const Life = () => {
 
         <ul>
           {postList.data.map((post) => (
-              <PostItem key={post.id} post={post} />
-            ))}
+            <PostItem key={post.id} post={post} />
+          ))}
         </ul>
       </LifeContentSection>
     </LifeSection>
