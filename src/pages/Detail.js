@@ -3,7 +3,6 @@ import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 import apis from '../api/index';
-
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faThumbsUp,
@@ -11,13 +10,17 @@ import {
   faCamera,
   faEllipsisVertical,
 } from '@fortawesome/free-solid-svg-icons';
+import axios from '../../node_modules/axios/index';
+import { useNavigate } from 'react-router-dom';
 
 // 컴포넌트
 const Detail = () => {
+  const navigate = useNavigate();
   const { postId } = useParams();
   // 댓글 입력 받기
   const comment_input = React.useRef('');
 
+  // 게시글 상세정보 불러오기 api
   const getDetailData = async () => {
     try {
       const res = await apis.getDetailPost(postId);
@@ -29,6 +32,16 @@ const Detail = () => {
     // return axios.get(`http://localhost:5001/posts/${postId}`);
   };
 
+  // 게시글 삭제 api
+  const deletePost = async () => {
+    try {
+      const res = await apis.deletePost(postId);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 댓글 목록 불러오기 api
   const getCommentsData = async () => {
     try {
       const res = await apis.getCommentsData(postId);
@@ -40,6 +53,7 @@ const Detail = () => {
     // return axios.get('http://localhost:5001/comments');
   };
 
+  // 댓글 추가 api
   const addComment = async (data) => {
     try {
       const res = await apis.addComment(postId, data);
@@ -51,6 +65,7 @@ const Detail = () => {
     // return axios.post('http://localhost:5001/comments', data);
   };
 
+  // 댓글 삭제 api
   const deleteComment = async (commentId) => {
     try {
       const res = await apis.deleteComment(1);
@@ -62,23 +77,21 @@ const Detail = () => {
     // return axios.delete(`http://localhost:5001/comments/${id}`);
   };
 
-  const onClickLike = async (isLiked) => {
-    if (isLiked) {
-      try {
-        const res = await apis.removeLike(postId);
-        console.log(res);
-        return res;
-      } catch (e) {
-        console.log(e);
-      }
-    } else {
-      try {
-        const res = await apis.addLike(postId);
-        console.log(res);
-        return res;
-      } catch (e) {
-        console.log(e);
-      }
+  // 좋아요 추가 api
+  const postLiked = async () => {
+    try {
+      const res = await apis.addLike(postId);
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 좋아요 삭제 api
+  const postUnLiked = async () => {
+    try {
+      const res = await apis.removeLike(postId);
+    } catch (e) {
+      console.log(e);
     }
   };
 
@@ -111,7 +124,9 @@ const Detail = () => {
 
   // 게시글 상세정보 가져오기
   const { data: detail_query } = useQuery(['post_detail'], getDetailData, {
-    onSuccess: (data) => {},
+    onSuccess: (data) => {
+      console.log('쿼리 불러오기', data);
+    },
   });
 
   // 댓글 리스트 가져오기
@@ -140,6 +155,28 @@ const Detail = () => {
     },
   });
 
+  // 게시글 삭제 하기
+  const { mutate: deletePostM } = useMutation(deletePost, {
+    onSuccess: () => {
+      navigate('/community/soomgo-life');
+    },
+  });
+
+  // 좋아요 + 1 즉각반영하기
+  const { mutate: likedCnt } = useMutation(postLiked, {
+    onSuccess: () => {
+      // 게시글 세부내용 다시 불러오기!
+      queryClient.invalidateQueries('post_detail');
+    },
+  });
+
+  // 좋아요 - 1 즉각반영하기
+  const { mutate: unliked } = useMutation(postUnLiked, {
+    onSuccess: () => {
+      // 게시글 세부내용 다시 불러오기!
+      queryClient.invalidateQueries('post_detail');
+    },
+  });
 
   return (
     <Container>
@@ -169,7 +206,13 @@ const Detail = () => {
             {is_ClickPost ? (
               <Modal>
                 <ModalUl>수정하기</ModalUl>
-                <ModalUl>삭제하기</ModalUl>
+                <ModalUl
+                  onClick={() => {
+                    deletePostM();
+                  }}
+                >
+                  삭제하기
+                </ModalUl>
               </Modal>
             ) : null}
           </Profile>
@@ -189,19 +232,24 @@ const Detail = () => {
             })}
           </Tag>
           <Count>
-            <Like onClick={() => onClickLike(detail_query.data.liked)}>
+            <Like
+              onClick={() => {
+                {
+                  detail_query.data.liked ? unliked() : likedCnt();
+                }
+              }}
+            >
               <Font>
                 <FontAwesomeIcon icon={faThumbsUp} />
               </Font>
-              <FontContent liked={!!detail_query.data.liked}>
-                좋아요 {detail_query.data.commentCount}
-              </FontContent>
+              {/* <FontContent liked={!!detail_query.data.liked}> */}
+              <FontContent>좋아요 {detail_query.data.likeCount}</FontContent>
             </Like>
             <CommentCount>
               <Font>
                 <FontAwesomeIcon icon={faCommentDots} />
               </Font>
-              <FontContent>댓글 {detail_query.data.likeCount}</FontContent>
+              <FontContent>댓글 {detail_query.data.commentCount}</FontContent>
             </CommentCount>
           </Count>
           <Line />
@@ -220,9 +268,7 @@ const Detail = () => {
               <Btn
                 onClick={() => {
                   const data = {
-                    username: '새로운 댓글 작성자',
                     content: comment_input.current.value,
-                    createdAt: '방금전',
                   };
 
                   mutate(data);
@@ -396,11 +442,12 @@ const Font = styled.div`
 `;
 
 const FontContent = styled.div`
-  color: ${({ liked }) => (liked ? '#00c7ae;' : 'gray')};
+  /* color: ${({ liked }) => (liked ? '#00c7ae;' : 'gray')}; */
   font-weight: 500;
-  svg {
+  color: gray;
+  /* svg {
     fill: ${({ liked }) => (liked ? '#00c7ae;' : 'gray')};
-  }
+  } */
 `;
 
 const Like = styled.div`

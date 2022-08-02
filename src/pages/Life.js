@@ -59,7 +59,7 @@ const Life = () => {
         <ul>
           <h3 hidden>카테고리 목록</h3>
           {categories &&
-          // FIXME: key 추가, 데이터 없을 때 처리 다시
+            // FIXME: key 추가, 데이터 없을 때 처리 다시
             categories.map((category) => {
               return (
                 <CategoryItem
@@ -96,7 +96,17 @@ const Life = () => {
             <Wrap>
               <StyledSlider {...settings}>
                 <div>
-                  <SliderListF></SliderListF>
+                  <SliderListF>
+                    <div style={{ padding: '20px' }}>
+                      <div style={{ fontSize: '14px' }}>공지사항</div>
+                      <div style={{ fontWeight: '600', marginTop: '13px' }}>
+                        올바른 커뮤니티 사용법 숨고생활 가이드✏️
+                      </div>
+                      <div div style={{ fontSize: '14px', marginTop: '30px' }}>
+                        Soomgo
+                      </div>
+                    </div>
+                  </SliderListF>
                 </div>
                 <div>
                   <SliderList></SliderList>
@@ -116,9 +126,10 @@ const Life = () => {
         )}
 
         <ul>
-          {postList && postList.content.map((post) => (
-            <PostItem key={post.id} post={post} />
-          ))}
+          {postList &&
+            postList.content.map((post) => (
+              <PostItem key={post.id} post={post} />
+            ))}
         </ul>
       </LifeContentSection>
     </LifeSection>
@@ -218,6 +229,9 @@ const SliderListF = styled.div`
   border-radius: 20px;
   background-color: #00c7ae;
   margin-right: 10px;
+  div {
+    color: white;
+  }
 `;
 
 const SliderList = styled.div`

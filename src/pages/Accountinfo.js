@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineRight } from 'react-icons/ai';
+import apis from '../api/index';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useNavigate } from 'react-router-dom';
 
 const Accountinfo = () => {
+  const navigate = useNavigate();
+
+  // 유저정보 불러오기 api
+  const getMyProfile = async () => {
+    try {
+      const res = await apis.getAuth();
+      console.log(res.data);
+      return res;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 유저정보 불러오는 쿼리
+  const profile_query = useQuery(['my_profile'], getMyProfile, {
+    onSuccess: (data) => {
+      console.log('여기가 문젠가?', data.data);
+      // console.log(typeof data.data.mobile);
+    },
+    onError: () => {
+      console.error('에러 발생!');
+    },
+  });
+
+  // 휴대폰 사이에 - 넣어주기
+  const phoneA = profile_query.data.data.mobile.slice(0, 3);
+  const phoneB = profile_query.data.data.mobile.slice(3, 7);
+  const phoneC = profile_query.data.data.mobile.slice(7, 11);
+  const phone = phoneA + '-' + phoneB + '-' + phoneC;
+
   return (
     <Wrap>
       <Container>
@@ -10,9 +43,20 @@ const Accountinfo = () => {
         <ProfileImg></ProfileImg>
         <List>
           <li>
-            <div style={{ margin: '14px 0', position: 'relative' }}>
+            <div
+              style={{
+                margin: '14px 0',
+                position: 'relative',
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                navigate('/mypage/account-info/settings');
+              }}
+            >
               <div style={{ color: '#b5b5b5' }}>이름</div>
-              <div style={{ marginTop: '10px' }}>전인호</div>
+              <div style={{ marginTop: '10px' }}>
+                {profile_query.data.data.username}
+              </div>
               <AiOutlineRight
                 style={{
                   position: 'absolute',
@@ -25,8 +69,18 @@ const Accountinfo = () => {
           </li>
           <li>
             <div style={{ margin: '14px 0', position: 'relative' }}>
-              <div style={{ color: '#b5b5b5' }}>이메일</div>
-              <div style={{ marginTop: '10px' }}>abc@naver.com</div>
+              <div
+                style={{ color: '#b5b5b5' }}
+                onClick={() => {
+                  // 모달창
+                }}
+              >
+                이메일
+              </div>
+              <div style={{ marginTop: '10px' }}>
+                {' '}
+                {profile_query.data.data.email}
+              </div>
               <AiOutlineRight
                 style={{
                   position: 'absolute',
@@ -38,9 +92,18 @@ const Accountinfo = () => {
             </div>
           </li>
           <li>
-            <div style={{ margin: '14px 0', position: 'relative' }}>
+            <div
+              style={{
+                margin: '14px 0',
+                position: 'relative',
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                navigate('/mypage/account-info/settings');
+              }}
+            >
               <div style={{ color: '#b5b5b5' }}>비밀번호</div>
-              <div style={{ marginTop: '10px' }}>******</div>
+              <div style={{ marginTop: '10px' }}>********</div>
               <AiOutlineRight
                 style={{
                   position: 'absolute',
@@ -52,9 +115,18 @@ const Accountinfo = () => {
             </div>
           </li>
           <li>
-            <div style={{ margin: '14px 0', position: 'relative' }}>
+            <div
+              style={{
+                margin: '14px 0',
+                position: 'relative',
+                cursor: 'pointer',
+              }}
+              onClick={() => {
+                navigate('/mypage/account-info/settings');
+              }}
+            >
               <div style={{ color: '#b5b5b5' }}>휴대전화번호</div>
-              <div style={{ marginTop: '10px' }}>010-8790-6480</div>
+              <div style={{ marginTop: '10px' }}> {phone}</div>
               <AiOutlineRight
                 style={{
                   position: 'absolute',

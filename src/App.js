@@ -17,6 +17,7 @@ import Mypageactivity from './components/Mypageactivity';
 import Mypost from './pages/Mypost';
 import MyComment from './pages/MyComment';
 import KnowhowDetail from './pages/KnowhowDetail';
+import Settings from './pages/Settings';
 
 const App = () => {
   return (
@@ -29,6 +30,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/mypage/account-info" element={<Accountinfo />} />
+          <Route path="/mypage/account-info/settings" element={<Settings />} />
           <Route path="/mypage/bookmark" element={<Bookmarkclip />} />
 
           <Route path="/mypage/community" element={<Mypageactivity />}>
