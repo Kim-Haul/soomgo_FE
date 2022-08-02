@@ -20,15 +20,15 @@ const Detail = () => {
   const getDetailData = () => {
     return axios.get(`http://localhost:5001/posts/${postId}`);
   };
-  
+
   const getCommentsData = () => {
     return axios.get('http://localhost:5001/comments');
   };
-  
+
   const addComment = (data) => {
     return axios.post('http://localhost:5001/comments', data);
   };
-  
+
   const deleteComment = (id) => {
     return axios.delete(`http://localhost:5001/comments/${id}`);
   };
@@ -107,7 +107,11 @@ const Detail = () => {
                 onClickPost();
               }}
             >
-              <FontAwesomeIcon icon={faEllipsisVertical} size="2x" />
+              <FontAwesomeIcon
+                icon={faEllipsisVertical}
+                size="2x"
+                color="black"
+              />
             </FontBtn>
             {is_ClickPost ? (
               <Modal>
@@ -191,7 +195,7 @@ const Detail = () => {
                     onClickComment(i);
                   }}
                 >
-                  <FontAwesomeIcon icon={faEllipsisVertical} />
+                  <FontAwesomeIcon icon={faEllipsisVertical} color="black" />
                 </FontCommentbtn>
                 {is_ClickComment && CommentIndex == i ? (
                   <CommentModal>
