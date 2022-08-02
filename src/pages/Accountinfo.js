@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { AiOutlineRight } from 'react-icons/ai';
 import apis from '../api/index';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 
 const Accountinfo = () => {
@@ -23,18 +23,26 @@ const Accountinfo = () => {
   const profile_query = useQuery(['my_profile'], getMyProfile, {
     onSuccess: (data) => {
       console.log('여기가 문젠가?', data.data);
-      // console.log(typeof data.data.mobile);
     },
     onError: () => {
       console.error('에러 발생!');
     },
   });
 
-  // 휴대폰 사이에 - 넣어주기
-  const phoneA = profile_query.data.data.mobile.slice(0, 3);
-  const phoneB = profile_query.data.data.mobile.slice(3, 7);
-  const phoneC = profile_query.data.data.mobile.slice(7, 11);
-  const phone = phoneA + '-' + phoneB + '-' + phoneC;
+  const onClickProfileEdit = () => {
+    navigate('/mypage/account-info/settings', {
+      state: profile_query.data.data,
+    });
+  };
+
+  let phone;
+  phone = profile_query.data.data.mobile ?? '';
+  if (profile_query.data.data.mobile) {
+    const phoneA = profile_query.data.data?.mobile.slice(0, 3);
+    const phoneB = profile_query.data.data?.mobile.slice(3, 7);
+    const phoneC = profile_query.data.data?.mobile.slice(7, 11);
+    phone = phoneA + '-' + phoneB + '-' + phoneC;
+  }
 
   return (
     <Wrap>
@@ -49,9 +57,7 @@ const Accountinfo = () => {
                 position: 'relative',
                 cursor: 'pointer',
               }}
-              onClick={() => {
-                navigate('/mypage/account-info/settings');
-              }}
+              onClick={onClickProfileEdit}
             >
               <div style={{ color: '#b5b5b5' }}>이름</div>
               <div style={{ marginTop: '10px' }}>
@@ -78,17 +84,8 @@ const Accountinfo = () => {
                 이메일
               </div>
               <div style={{ marginTop: '10px' }}>
-                {' '}
                 {profile_query.data.data.email}
               </div>
-              <AiOutlineRight
-                style={{
-                  position: 'absolute',
-                  top: '20px',
-                  right: '10px',
-                  color: '#b5b5b5',
-                }}
-              />
             </div>
           </li>
           <li>
@@ -98,9 +95,7 @@ const Accountinfo = () => {
                 position: 'relative',
                 cursor: 'pointer',
               }}
-              onClick={() => {
-                navigate('/mypage/account-info/settings');
-              }}
+              onClick={onClickProfileEdit}
             >
               <div style={{ color: '#b5b5b5' }}>비밀번호</div>
               <div style={{ marginTop: '10px' }}>********</div>
@@ -121,12 +116,10 @@ const Accountinfo = () => {
                 position: 'relative',
                 cursor: 'pointer',
               }}
-              onClick={() => {
-                navigate('/mypage/account-info/settings');
-              }}
+              onClick={onClickProfileEdit}
             >
               <div style={{ color: '#b5b5b5' }}>휴대전화번호</div>
-              <div style={{ marginTop: '10px' }}> {phone}</div>
+              <div style={{ marginTop: '10px' }}>{phone}</div>
               <AiOutlineRight
                 style={{
                   position: 'absolute',

@@ -1,21 +1,27 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { RiErrorWarningFill } from 'react-icons/ri';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import Form from 'react-bootstrap/Form';
+
 import apis from '../api';
+import { RiErrorWarningFill } from 'react-icons/ri';
 
 const Settings = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const profileData = location.state;
+
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm({ mode: 'onTouched' });
 
   const onSubmit = async (data) => {
     try {
       const res = await apis.editAuth(data);
+      navigate('/mypage/account-info');
     } catch (e) {
       console.log(e);
     }
@@ -47,6 +53,7 @@ const Settings = () => {
           <Form.Control
             type="text"
             autoComplete="off"
+            defaultValue={profileData.username}
             isInvalid={!!errors.username}
             {...register('username', {
               required: '이름을 입력해주세요.',
@@ -88,6 +95,8 @@ const Settings = () => {
             type="text"
             autoComplete="off"
             isInvalid={!!errors.mobile}
+            defaultValue={profileData.mobile}
+            placeholder="'-'는 빼고 입력해주세요."
             {...register('mobile', {
               required: '휴대전화를 입력해주세요.',
             })}
