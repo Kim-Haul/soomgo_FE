@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { storage } from '../shared/firebase';
 import {
@@ -8,12 +9,14 @@ import {
   getDownloadURL,
   deleteObject,
 } from 'firebase/storage';
+import apis from '../api';
 
 import { categories } from '../data';
 import { MdAddAPhoto } from 'react-icons/md';
 import { IoClose } from 'react-icons/io5';
 
 const Post = () => {
+  const navigate = useNavigate();
   const [isGosu, setIsGosu] = useState(true);
   const [imgList, setImgList] = useState([]);
   const [tagList, setTagList] = useState([]);
@@ -27,7 +30,7 @@ const Post = () => {
     mode: 'all',
   });
 
-  const onSubmitPost = (data) => {
+  const onSubmitPost = async (data) => {
     const newData = {
       subject: data.subject,
       title: data.title,
@@ -36,6 +39,15 @@ const Post = () => {
       imgurlList: imgList.map((v) => v.src),
     };
     console.log(newData);
+
+    try {
+      const res = await apis.addPost(newData);
+      console.log(res);
+      // alert('글작성 성공');
+      navigate('/community/soomgo-life');
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   const checkKeyDown = (e) => {
