@@ -104,5 +104,12 @@ const SignupForm = styled.form`
       background: #fee500;
       color: #050101;
     }
+    &:disabled {
+      background: #eee;
+      cursor: default;
+      &:hover {
+        filter: none;
+      }
+    }
   }
 `;

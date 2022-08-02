@@ -46,7 +46,7 @@ const App = () => {
             element={<Detail />}
           />
           <Route
-            path="/community/pro-knowhow/posts"
+            path="/community/pro-knowhow/posts/:postId"
             element={<KnowhowDetail />}
           />
           <Route path="/community/soomgo-life/post" element={<Post />} />

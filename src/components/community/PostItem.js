@@ -9,7 +9,7 @@ import { FaCommentDots } from 'react-icons/fa';
 const PostItem = ({ post }) => {
   return (
     <Item>
-      <Link to={`posts/${post.id}`}>
+      <Link to={`posts/${post.postId}`}>
         <em>{post.subject}</em>
         <PostContent>
           <div>
@@ -21,7 +21,7 @@ const PostItem = ({ post }) => {
               ))}
             </ul>
           </div>
-          <img src="/images/icon-all.png" alt="" />
+          <img src={post.imgUrl} alt="" />
         </PostContent>
         <PostFooter>
           <ul className="list-count">

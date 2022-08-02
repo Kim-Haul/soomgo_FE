@@ -29,10 +29,10 @@ const Home = () => {
     }
   };
 
-  const { data: postList } = useQuery(['postList'], getPostData, {
+  const { data: postList } = useQuery(['postCuration'], getPostData, {
     refetchOnWindowFocus: false,
   });
-  const { data: knowhowList } = useQuery(['knowhowList'], getKnowhowData, {
+  const { data: knowhowList } = useQuery(['knowhowCuration'], getKnowhowData, {
     refetchOnWindowFocus: false,
   });
 
@@ -57,7 +57,7 @@ const Home = () => {
           </Link>
         </header>
         <CurationList>
-          {postList.data.slice(0, 6).map((post) => (
+          {postList && postList.data.slice(0, 6).map((post) => (
             <li key={post.id}>
               <CurationContent to={`/community/soomgo-life/posts/${post.id}`}>
                 <div>
@@ -80,7 +80,7 @@ const Home = () => {
           </Link>
         </header>
         <KnowhowList>
-          {knowhowList.data.slice(0, 4).map((knowhow) => (
+          {knowhowList && knowhowList.data.slice(0, 4).map((knowhow) => (
             <li key={knowhow.id}>
               <Link to="">
                 <div>

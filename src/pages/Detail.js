@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
-import axios from 'axios';
 import styled from 'styled-components';
+import apis from '../api/index';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faThumbsUp,
@@ -17,20 +18,68 @@ const Detail = () => {
   // 댓글 입력 받기
   const comment_input = React.useRef('');
 
-  const getDetailData = () => {
-    return axios.get(`http://localhost:5001/posts/${postId}`);
+  const getDetailData = async () => {
+    try {
+      const res = await apis.getDetailPost(postId);
+      console.log(res.data);
+      return res;
+    } catch (e) {
+      console.log(e);
+    }
+    // return axios.get(`http://localhost:5001/posts/${postId}`);
   };
 
-  const getCommentsData = () => {
-    return axios.get('http://localhost:5001/comments');
+  const getCommentsData = async () => {
+    try {
+      const res = await apis.getCommentsData(postId);
+      console.log(res);
+      return res;
+    } catch (e) {
+      console.log(e);
+    }
+    // return axios.get('http://localhost:5001/comments');
   };
 
-  const addComment = (data) => {
-    return axios.post('http://localhost:5001/comments', data);
+  const addComment = async (data) => {
+    try {
+      const res = await apis.addComment(postId, data);
+      console.log(res.data);
+      return res.data;
+    } catch (e) {
+      console.log(e);
+    }
+    // return axios.post('http://localhost:5001/comments', data);
   };
 
-  const deleteComment = (id) => {
-    return axios.delete(`http://localhost:5001/comments/${id}`);
+  const deleteComment = async (commentId) => {
+    try {
+      const res = await apis.deleteComment(1);
+      console.log(res.data);
+      return res.data;
+    } catch (e) {
+      console.log(e);
+    }
+    // return axios.delete(`http://localhost:5001/comments/${id}`);
+  };
+
+  const onClickLike = async (isLiked) => {
+    if (isLiked) {
+      try {
+        const res = await apis.removeLike(postId);
+        console.log(res);
+        return res;
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        const res = await apis.addLike(postId);
+        console.log(res);
+        return res;
+      } catch (e) {
+        console.log(e);
+      }
+    }
   };
 
   // 등록 버튼 토글
@@ -61,14 +110,18 @@ const Detail = () => {
   const queryClient = useQueryClient();
 
   // 게시글 상세정보 가져오기
-  const detail_query = useQuery(['post_detail'], getDetailData, {
+  const { data: detail_query } = useQuery(['post_detail'], getDetailData, {
     onSuccess: (data) => {},
   });
 
   // 댓글 리스트 가져오기
-  const comments_query = useQuery(['comments_detail'], getCommentsData, {
-    onSuccess: (data) => {},
-  });
+  const { data: comments_query } = useQuery(
+    ['comments_detail'],
+    getCommentsData,
+    {
+      // onSuccess: (data) => {console.log('코멘트', data.data)},
+    },
+  );
 
   // 댓글 추가 하기
   const { mutate } = useMutation(addComment, {
@@ -87,19 +140,19 @@ const Detail = () => {
     },
   });
 
+
   return (
     <Container>
       <DetialContainer>
         <TitleContainer>
-          <Subject>커뮤니티 &gt; {detail_query.data.data.subject}</Subject>
-          <Title>{detail_query.data.data.title}</Title>
+          <Subject>커뮤니티 &gt; {detail_query.data.subject}</Subject>
+          <Title>{detail_query.data.title}</Title>
           <Profile>
             <Img></Img>
             <UserWrap>
-              <Username>김재성</Username>
+              <Username>{detail_query.data.writer}</Username>
               <User>
-                {detail_query.data.data.createdAt}·조회{' '}
-                {detail_query.data.data.viewCount}
+                {detail_query.data.createdAt}·조회 {detail_query.data.viewCount}
               </User>
             </UserWrap>
             <FontBtn
@@ -123,9 +176,9 @@ const Detail = () => {
           <Line />
         </TitleContainer>
         <BodyContainer>
-          <Content>{detail_query.data.data.content}</Content>
+          <Content>{detail_query.data.content}</Content>
           <Tag>
-            {detail_query.data.data.tagList.map((v, i) => {
+            {detail_query.data.tagList.map((v, i) => {
               return (
                 <>
                   <Tagbutton key={i}>
@@ -136,20 +189,19 @@ const Detail = () => {
             })}
           </Tag>
           <Count>
-            <Like>
+            <Like onClick={() => onClickLike(detail_query.data.liked)}>
               <Font>
                 <FontAwesomeIcon icon={faThumbsUp} />
               </Font>
-              <FontContent>
-                좋아요 {detail_query.data.data.commentCount}
+              <FontContent liked={!!detail_query.data.liked}>
+                좋아요 {detail_query.data.commentCount}
               </FontContent>
             </Like>
             <CommentCount>
-              {' '}
               <Font>
                 <FontAwesomeIcon icon={faCommentDots} />
               </Font>
-              <FontContent>댓글 {detail_query.data.data.likeCount}</FontContent>
+              <FontContent>댓글 {detail_query.data.likeCount}</FontContent>
             </CommentCount>
           </Count>
           <Line />
@@ -181,7 +233,7 @@ const Detail = () => {
             ) : null}
           </Input>
 
-          {comments_query.data.data.map((v, i) => {
+          {comments_query.data.map((v, i) => {
             return (
               <CommentBox key={i}>
                 <CommentImg></CommentImg>
@@ -344,8 +396,11 @@ const Font = styled.div`
 `;
 
 const FontContent = styled.div`
-  color: gray;
+  color: ${({ liked }) => (liked ? '#00c7ae;' : 'gray')};
   font-weight: 500;
+  svg {
+    fill: ${({ liked }) => (liked ? '#00c7ae;' : 'gray')};
+  }
 `;
 
 const Like = styled.div`

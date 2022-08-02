@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { BiSearch } from 'react-icons/bi';
 import { categories } from '../data';
 import axios from 'axios';
+import { api } from '../api/index';
 import { useQuery } from '@tanstack/react-query';
 
 import PostItem from '../components/community/PostItem';
@@ -28,17 +29,27 @@ const Life = () => {
     console.log(name); // delayed!
   };
 
-  const getPostData = () => {
+  // const getPostData = () => {
+  //   try {
+  //     const res = axios.get('http://localhost:5001/posts');
+  //     return res;
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
+
+  const getPostData = async () => {
     try {
-      const res = axios.get('http://localhost:5001/posts');
-      return res;
+      const res = await api.get('/posts/cursor?lastid= &size=5&subject=ALL');
+      // console.log(res);
+      return res.data;
     } catch (e) {
       console.log(e);
     }
   };
 
   const { data: postList } = useQuery(['postList'], getPostData);
-  // console.log(postList.data);
+  console.log(postList.content);
 
   return (
     <LifeSection>
@@ -48,6 +59,7 @@ const Life = () => {
         <ul>
           <h3 hidden>카테고리 목록</h3>
           {categories &&
+          // FIXME: key 추가, 데이터 없을 때 처리 다시
             categories.map((category) => {
               return (
                 <CategoryItem
@@ -104,7 +116,7 @@ const Life = () => {
         )}
 
         <ul>
-          {postList.data.map((post) => (
+          {postList && postList.content.map((post) => (
             <PostItem key={post.id} post={post} />
           ))}
         </ul>

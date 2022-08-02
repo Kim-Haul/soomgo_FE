@@ -17,7 +17,7 @@ import { IoClose } from 'react-icons/io5';
 
 const Post = () => {
   const navigate = useNavigate();
-  const [isGosu, setIsGosu] = useState(true);
+  const [isGosu, setIsGosu] = useState(false);
   const [imgList, setImgList] = useState([]);
   const [tagList, setTagList] = useState([]);
   const [tag, setTag] = useState('');
