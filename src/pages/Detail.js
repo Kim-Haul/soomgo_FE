@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 import apis from '../api/index';
@@ -7,16 +7,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faThumbsUp,
   faCommentDots,
-  faCamera,
   faEllipsisVertical,
 } from '@fortawesome/free-solid-svg-icons';
 import axios from '../../node_modules/axios/index';
 import { useNavigate } from 'react-router-dom';
+import { BsChatDotsFill } from 'react-icons/bs';
 
 // 컴포넌트
 const Detail = () => {
   const navigate = useNavigate();
   const { postId } = useParams();
+  const navigate = useNavigate();
   // 댓글 입력 받기
   const comment_input = React.useRef('');
 
@@ -57,7 +58,7 @@ const Detail = () => {
   const addComment = async (data) => {
     try {
       const res = await apis.addComment(postId, data);
-      console.log(res.data);
+      alert(res.data);
       return res.data;
     } catch (e) {
       console.log(e);
@@ -68,8 +69,8 @@ const Detail = () => {
   // 댓글 삭제 api
   const deleteComment = async (commentId) => {
     try {
-      const res = await apis.deleteComment(1);
-      console.log(res.data);
+      const res = await apis.deleteComment(commentId);
+      alert(res.data);
       return res.data;
     } catch (e) {
       console.log(e);
@@ -118,6 +119,10 @@ const Detail = () => {
     setClickComment((is_ClickComment) => !is_ClickComment);
     setCommentIndex(i);
   };
+
+  const onClickEdit = () => {
+    navigate('/community/soomgo-life/post', { state: detail_query.data });
+  }
 
   // 쿼리 클라이언트 정의
   const queryClient = useQueryClient();
@@ -205,7 +210,7 @@ const Detail = () => {
             </FontBtn>
             {is_ClickPost ? (
               <Modal>
-                <ModalUl>수정하기</ModalUl>
+                <ModalUl onClick={onClickEdit}>수정하기</ModalUl>
                 <ModalUl
                   onClick={() => {
                     deletePostM();
@@ -257,7 +262,7 @@ const Detail = () => {
         <CommentContainer>
           <Input>
             <Font style={{ marginLeft: '7px' }}>
-              <FontAwesomeIcon icon={faCamera} />
+              <BsChatDotsFill />
             </Font>
             <CommentInput
               placeholder="댓글을 남겨보세요"
@@ -452,7 +457,6 @@ const FontContent = styled.div`
 
 const Like = styled.div`
   display: flex;
-
   margin-right: 20px;
   cursor: pointer;
 `;
@@ -474,6 +478,13 @@ const Input = styled.div`
   border: 1px solid #f4f4f4;
   padding: 8px;
   border-radius: 10px;
+  svg {
+    width: 17px;
+    height: 17px;
+    margin-top: -5px;
+    fill: #2d2d2d;
+    transform: rotateY(180deg);
+  }
 `;
 
 const CommentInput = styled.textarea`
@@ -484,6 +495,7 @@ const CommentInput = styled.textarea`
   border: none;
   margin-left: 5px;
   overflow: hidden;
+  resize: none;
 
   &:focus {
     outline: none;

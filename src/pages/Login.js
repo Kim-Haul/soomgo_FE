@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
@@ -10,8 +10,13 @@ const Login = () => {
   const {
     register,
     handleSubmit,
+    setFocus,
     formState: { errors, isValid },
-  } = useForm({ mode: 'onTouched' });
+  } = useForm({ mode: 'onChange' });
+
+  useEffect(() => {
+    setFocus('email');
+  }, []);
 
   const onSubmit = async (data) => {
     try {
