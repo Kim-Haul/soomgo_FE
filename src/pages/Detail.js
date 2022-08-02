@@ -10,12 +10,10 @@ import {
   faEllipsisVertical,
 } from '@fortawesome/free-solid-svg-icons';
 import axios from '../../node_modules/axios/index';
-import { useNavigate } from 'react-router-dom';
 import { BsChatDotsFill } from 'react-icons/bs';
 
 // 컴포넌트
 const Detail = () => {
-  const navigate = useNavigate();
   const { postId } = useParams();
   const navigate = useNavigate();
   // 댓글 입력 받기
@@ -122,7 +120,7 @@ const Detail = () => {
 
   const onClickEdit = () => {
     navigate('/community/soomgo-life/post', { state: detail_query.data });
-  }
+  };
 
   // 쿼리 클라이언트 정의
   const queryClient = useQueryClient();

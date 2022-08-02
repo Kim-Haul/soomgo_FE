@@ -13,10 +13,6 @@ const Settings = () => {
     formState: { errors, isValid },
   } = useForm({ mode: 'onTouched' });
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
   const onSubmit = async (data) => {
     try {
       const res = await apis.editAuth(data);

@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import ScrollToTop from './components/common/ScrollToTop';
 import { Provider } from 'react-redux';
 import store from './redux/store';
 import './styles/customedBootstrap.scss';
@@ -20,6 +21,7 @@ root.render(
   <Suspense fallback="로딩중입니다...">
     <QueryClientProvider client={queryClient}>
       <BrowserRouter>
+        <ScrollToTop />
         <App />
       </BrowserRouter>
     </QueryClientProvider>
