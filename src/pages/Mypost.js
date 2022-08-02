@@ -1,8 +1,36 @@
 import React from 'react';
 import styled from 'styled-components';
 import { mypost } from '../data';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import apis from '../api/index';
 
 const Myposts = () => {
+  // 게시글 목록 불러오기 api
+  const getMyPostList = async () => {
+    try {
+      const res = await apis.getMypost();
+      // console.log(res.data.mypostList);
+      return res;
+      // 쿼리에서 쓰기위해선 return res를 꼭 해줘야함 !!
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 쿼리 클라이언트 정의
+  const queryClient = useQueryClient();
+
+  // 게시글목록 가져오기
+  // const { data: list_query } = useQuery(['post_list'], getMyPostList);
+  const list_query = useQuery(['post_list'], getMyPostList, {
+    onSuccess: (data) => {
+      console.log('여기가 문젠가?', data.data.mypostList);
+    },
+    onError: () => {
+      console.error('에러 발생!');
+    },
+  });
+
   return (
     <Wrap>
       {/* <Content>
@@ -15,11 +43,12 @@ const Myposts = () => {
           <br /> 정보와 질문을 올려보세요!
         </div>
       </Content> */}
-      {mypost.map((v, i) => {
+
+      {list_query.data.data.mypostList.map((v, i) => {
         return (
           <List key={i}>
             <Tag>
-              <span>{v.tag}</span>
+              <span>{v.subject}</span>
             </Tag>
             <div
               style={{

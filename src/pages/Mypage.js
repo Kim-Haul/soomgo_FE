@@ -4,8 +4,31 @@ import { Link } from 'react-router-dom';
 import { BsChatRightText, BsBookmarkStar } from 'react-icons/bs';
 import { RiCoupon2Fill } from 'react-icons/ri';
 import { AiOutlineRight } from 'react-icons/ai';
+import apis from '../api/index';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const Mypage = () => {
+  // 유저정보 불러오기 api
+  const getMyProfile = async () => {
+    try {
+      const res = await apis.getAuth();
+      console.log(res.data);
+      return res;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 유저정보 불러오는 쿼리
+  const profile_query = useQuery(['my_profile'], getMyProfile, {
+    onSuccess: (data) => {
+      console.log('여기가 문젠가?', data.data);
+    },
+    onError: () => {
+      console.error('에러 발생!');
+    },
+  });
+
   return (
     <Wrap>
       <Container>
@@ -13,8 +36,10 @@ const Mypage = () => {
         <Profile to="/mypage/account-info">
           <ProfileImg></ProfileImg>
           <div>
-            <h5>전인호 고객님</h5>
-            <div>abc@naver.com</div>
+            <h5>{profile_query.data.data.username} 고객님</h5>
+
+            <div>{profile_query.data.data.email}</div>
+            {profile_query.data.data.gosu ? <button>고수</button> : null}
           </div>
         </Profile>
         <Coupon>
@@ -81,10 +106,21 @@ const Container = styled.div`
 const Profile = styled(Link)`
   display: flex;
   align-items: center;
+  position: relative;
   div div {
     color: #b5b5b5;
     margin-top: -10px;
     font-size: 14px;
+  }
+  button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 30px;
+    position: absolute;
+    right: 10px;
+    top: 15px;
   }
 `;
 
