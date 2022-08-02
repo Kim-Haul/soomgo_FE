@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { storage } from '../shared/firebase';
 import {
@@ -17,6 +17,9 @@ import { IoClose } from 'react-icons/io5';
 
 const Post = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const postData = location.state;
+
   const [isGosu, setIsGosu] = useState(false);
   const [imgList, setImgList] = useState([]);
   const [tagList, setTagList] = useState([]);
@@ -25,10 +28,23 @@ const Post = () => {
   const {
     register,
     handleSubmit,
+    setValue,
+    setFocus,
     formState: { isValid },
   } = useForm({
     mode: 'all',
   });
+
+  useEffect(() => {
+    if (postData) {
+      setValue('subject', postData.subject);
+      setImgList(postData.imgUrlList.map((src) => ({ name: src, src })));
+      setValue('title', postData.title);
+      setTagList(postData.tagList);
+      setValue('content', postData.content);
+      setFocus('title');
+    }
+  }, []);
 
   const onSubmitPost = async (data) => {
     const newData = {
@@ -40,13 +56,22 @@ const Post = () => {
     };
     console.log(newData);
 
-    try {
-      const res = await apis.addPost(newData);
-      console.log(res);
-      // alert('글작성 성공');
-      navigate('/community/soomgo-life');
-    } catch (e) {
-      console.log(e);
+    if (!postData) {
+      try {
+        const res = await apis.addPost(newData);
+        alert(res.data);
+        navigate('/community/soomgo-life');
+      } catch (e) {
+        console.log(e);
+      }
+    } else {
+      try {
+        const res = await apis.editPost(postData.postId, newData);
+        alert(res.data);
+        navigate('/community/soomgo-life');
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 
@@ -70,11 +95,13 @@ const Post = () => {
 
   const removeImage = async (imgName) => {
     setImgList(imgList.filter((img) => img.name !== imgName));
-    try {
-      const imgRef = ref(storage, `images/${imgName}`);
-      await deleteObject(imgRef);
-    } catch (e) {
-      console.log(e);
+    if (!postData) {
+      try {
+        const imgRef = ref(storage, `images/${imgName}`);
+        await deleteObject(imgRef);
+      } catch (e) {
+        console.log(e);
+      }
     }
   };
 

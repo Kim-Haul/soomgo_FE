@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 import apis from '../api/index';
@@ -15,6 +15,7 @@ import { BsChatDotsFill } from 'react-icons/bs';
 // 컴포넌트
 const Detail = () => {
   const { postId } = useParams();
+  const navigate = useNavigate();
   // 댓글 입력 받기
   const comment_input = React.useRef('');
 
@@ -43,7 +44,7 @@ const Detail = () => {
   const addComment = async (data) => {
     try {
       const res = await apis.addComment(postId, data);
-      console.log(res.data);
+      alert(res.data);
       return res.data;
     } catch (e) {
       console.log(e);
@@ -53,8 +54,8 @@ const Detail = () => {
 
   const deleteComment = async (commentId) => {
     try {
-      const res = await apis.deleteComment(1);
-      console.log(res.data);
+      const res = await apis.deleteComment(commentId);
+      alert(res.data);
       return res.data;
     } catch (e) {
       console.log(e);
@@ -105,6 +106,10 @@ const Detail = () => {
     setClickComment((is_ClickComment) => !is_ClickComment);
     setCommentIndex(i);
   };
+
+  const onClickEdit = () => {
+    navigate('/community/soomgo-life/post', { state: detail_query.data });
+  }
 
   // 쿼리 클라이언트 정의
   const queryClient = useQueryClient();
@@ -168,7 +173,7 @@ const Detail = () => {
             </FontBtn>
             {is_ClickPost ? (
               <Modal>
-                <ModalUl>수정하기</ModalUl>
+                <ModalUl onClick={onClickEdit}>수정하기</ModalUl>
                 <ModalUl>삭제하기</ModalUl>
               </Modal>
             ) : null}
