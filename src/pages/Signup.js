@@ -11,7 +11,7 @@ const Signup = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
-  } = useForm({ mode: 'onTouched' });
+  } = useForm({ mode: 'onChange' });
 
   const onSubmit = async (data) => {
     try {
