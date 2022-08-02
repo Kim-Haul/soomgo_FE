@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
@@ -8,9 +8,9 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   faThumbsUp,
   faCommentDots,
-  faCamera,
   faEllipsisVertical,
 } from '@fortawesome/free-solid-svg-icons';
+import { BsChatDotsFill } from 'react-icons/bs';
 
 // 컴포넌트
 const Detail = () => {
@@ -194,14 +194,14 @@ const Detail = () => {
                 <FontAwesomeIcon icon={faThumbsUp} />
               </Font>
               <FontContent liked={!!detail_query.data.liked}>
-                좋아요 {detail_query.data.commentCount}
+                좋아요 {detail_query.data.likeCount}
               </FontContent>
             </Like>
             <CommentCount>
               <Font>
                 <FontAwesomeIcon icon={faCommentDots} />
               </Font>
-              <FontContent>댓글 {detail_query.data.likeCount}</FontContent>
+              <FontContent>댓글 {detail_query.data.commentCount}</FontContent>
             </CommentCount>
           </Count>
           <Line />
@@ -209,7 +209,7 @@ const Detail = () => {
         <CommentContainer>
           <Input>
             <Font style={{ marginLeft: '7px' }}>
-              <FontAwesomeIcon icon={faCamera} />
+              <BsChatDotsFill />
             </Font>
             <CommentInput
               placeholder="댓글을 남겨보세요"
@@ -405,7 +405,6 @@ const FontContent = styled.div`
 
 const Like = styled.div`
   display: flex;
-
   margin-right: 20px;
   cursor: pointer;
 `;
@@ -427,6 +426,13 @@ const Input = styled.div`
   border: 1px solid #f4f4f4;
   padding: 8px;
   border-radius: 10px;
+  svg {
+    width: 17px;
+    height: 17px;
+    margin-top: -5px;
+    fill: #2d2d2d;
+    transform: rotateY(180deg);
+  }
 `;
 
 const CommentInput = styled.textarea`
@@ -437,6 +443,7 @@ const CommentInput = styled.textarea`
   border: none;
   margin-left: 5px;
   overflow: hidden;
+  resize: none;
 
   &:focus {
     outline: none;
