@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Form from 'react-bootstrap/Form';
 import apis from '../api';
+import KakaoLoginRedirect from '../components/KakaoLoginRedirect';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -31,9 +32,9 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <LoginSection>
       <h2>로그인</h2>
-      <SignupForm onSubmit={handleSubmit(onSubmit)}>
+      <LoginForm onSubmit={handleSubmit(onSubmit)}>
         <Form.Label>이메일</Form.Label>
         <Form.Control
           type="email"
@@ -71,20 +72,29 @@ const Login = () => {
         )}
 
         <button disabled={!isValid}>이메일 로그인</button>
-        <button className="btn-kakao">Kakao로 시작하기</button>
+        <a
+          rel="noreferrer"
+          href="http://52.78.157.63/oauth2/authorization/kakao"
+        >
+          <button type="button" className="btn-kakao">
+            Kakao로 시작하기
+          </button>
+        </a>
+
         <Link to="/signup">계정이 없으신가요?</Link>
-      </SignupForm>
-    </div>
+      </LoginForm>
+    </LoginSection>
   );
 };
 
 export default Login;
 
-const SignupForm = styled(Form)`
+const LoginSection = styled.section`
   display: flex;
   flex-direction: column;
-  width: 60%;
+  margin: 0 auto;
   button {
+    width: 100%;
     margin-top: 10px;
     &.btn-kakao {
       background: #fee500;
@@ -98,4 +108,11 @@ const SignupForm = styled(Form)`
       }
     }
   }
+`;
+
+const LoginForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  margin: 0 auto;
 `;

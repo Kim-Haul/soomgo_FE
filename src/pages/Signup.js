@@ -25,7 +25,7 @@ const Signup = () => {
   };
 
   return (
-    <div>
+    <SignupSection>
       <h1>숨고에 오신 것을 환영합니다</h1>
       <SignupForm onSubmit={handleSubmit(onSubmit)}>
         <Form.Label>이름</Form.Label>
@@ -86,19 +86,27 @@ const Signup = () => {
         )}
 
         <button disabled={!isValid}>회원가입</button>
-        <button className="btn-kakao">Kakao로 가입하기</button>
+        <a
+          rel="noreferrer"
+          href="http://52.78.157.63/oauth2/authorization/kakao"
+        >
+          <button type="button" className="btn-kakao">
+            Kakao로 가입하기
+          </button>
+        </a>
       </SignupForm>
-    </div>
+    </SignupSection>
   );
 };
 
 export default Signup;
 
-const SignupForm = styled.form`
+const SignupSection = styled.section`
   display: flex;
   flex-direction: column;
-  width: 60%;
+  margin: 0 auto;
   button {
+    width: 100%;
     margin-top: 10px;
     &.btn-kakao {
       background: #fee500;
@@ -112,4 +120,11 @@ const SignupForm = styled.form`
       }
     }
   }
+`;
+
+const SignupForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+  margin: 0 auto;
 `;
