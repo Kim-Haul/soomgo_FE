@@ -1,26 +1,23 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { BiSearch } from 'react-icons/bi';
-import { categories } from '../data';
-import apis from '../api/index';
-import { api } from '../api/index';
-import { useQuery } from '@tanstack/react-query';
-import { AiFillLike } from 'react-icons/ai';
-import { BsChatDotsFill } from 'react-icons/bs';
-
-import PostItem from '../components/community/PostItem';
-import { useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import {
+  useQuery,
+  useQueryClient,
+  useInfiniteQuery,
+} from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
-import { api } from '../api/index';
+import apis, { api } from '../api/index';
 import { categories } from '../data';
 import PostItem from '../components/community/PostItem';
 import Loading from '../components/common/Loading';
 import { BiSearch } from 'react-icons/bi';
+import { AiFillLike } from 'react-icons/ai';
+import { BsChatDotsFill } from 'react-icons/bs';
 
 const Life = () => {
   // 캐러셀 세팅
@@ -72,9 +69,6 @@ const Life = () => {
     },
   });
 
-  const { data: postList } = useQuery(['postList'], getPostData);
-  // console.log(postList.content);
-  
   // 무한 스크롤 데이터 패칭
   const {
     data: postList,
@@ -161,66 +155,67 @@ const Life = () => {
                           Soomgo
                         </div>
                       </div>
-                    </div>
-                  </SliderListF>
-                </div>
-                {viewlist_query.data.postList.map((v, i) => {
-                  return (
-                    <div key={i}>
-                      <SliderList>
-                        <div style={{ padding: '20px' }}>
-                          <div style={{ fontSize: '14px', color: 'gray' }}>
-                            {v.subject}
-                          </div>
-                          <div style={{ fontWeight: '600', marginTop: '13px' }}>
-                            {v.title}
-                          </div>
-                          <div
-                            style={{
-                              display: 'flex',
-                              fontSize: '15px',
-                              marginTop: '55px',
-                              color: '#c5c5c5',
-                            }}
-                          >
+                    </SliderListF>
+                  </div>
+                  {viewlist_query.data.postList.map((v, i) => {
+                    return (
+                      <div key={i}>
+                        <SliderList>
+                          <div style={{ padding: '20px' }}>
+                            <div style={{ fontSize: '14px', color: 'gray' }}>
+                              {v.subject}
+                            </div>
+                            <div
+                              style={{ fontWeight: '600', marginTop: '13px' }}
+                            >
+                              {v.title}
+                            </div>
                             <div
                               style={{
-                                marginRight: '3px',
                                 display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
+                                fontSize: '15px',
+                                marginTop: '55px',
+                                color: '#c5c5c5',
                               }}
                             >
-                              <AiFillLike />
-                            </div>
-                            <div> {v.likeCount}</div>
+                              <div
+                                style={{
+                                  marginRight: '3px',
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}
+                              >
+                                <AiFillLike />
+                              </div>
+                              <div> {v.likeCount}</div>
 
-                            <div
-                              style={{
-                                marginLeft: '15px',
-                                marginRight: '6px',
-                                display: 'flex',
-                                justifyContent: 'center',
-                                alignItems: 'center',
-                              }}
-                            >
-                              <BsChatDotsFill
-                                style={{ transform: 'rotateY(180deg)' }}
-                              />
+                              <div
+                                style={{
+                                  marginLeft: '15px',
+                                  marginRight: '6px',
+                                  display: 'flex',
+                                  justifyContent: 'center',
+                                  alignItems: 'center',
+                                }}
+                              >
+                                <BsChatDotsFill
+                                  style={{ transform: 'rotateY(180deg)' }}
+                                />
+                              </div>
+                              <div> {v.commentCount}</div>
                             </div>
-                            <div> {v.commentCount}</div>
                           </div>
-                        </div>
-                      </SliderList>
-                    </div>
-                  );
-                })}
-              </StyledSlider>
-            </Wrap>
-          </>
-        )}
+                        </SliderList>
+                      </div>
+                    );
+                  })}
+                </StyledSlider>
+              </Wrap>
+            </>
+          )}
 
-        <ul>
+          <ul>
             {postList &&
               postList.pages.map((page, index) => (
                 <React.Fragment key={index}>
@@ -230,8 +225,8 @@ const Life = () => {
                 </React.Fragment>
               ))}
           </ul>
-      </LifeContentSection>
-    </LifeSection>
+        </LifeContentSection>
+      </LifeSection>
       {isFetchingNextPage ? <Loading /> : <div ref={ref} />}
     </>
   );
