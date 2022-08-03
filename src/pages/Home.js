@@ -1,12 +1,11 @@
 import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
-import apis, { api } from '../api';
+import { api } from '../api';
 import MainSlider from '../components/MainSlider';
-import { mainCategories } from '../data';
+import { mainCategories, category } from '../data';
 import { AiOutlineRight } from 'react-icons/ai';
 
 const Home = () => {
@@ -55,13 +54,14 @@ const Home = () => {
             <AiOutlineRight />
           </Link>
         </header>
+
         <CurationList>
           {postList &&
             postList.map((post) => (
               <li key={post.postId}>
                 <CurationContent to={`/community/soomgo-life/posts/${post.postId}`}>
                   <div>
-                    <em>{post.subject}</em>
+                    <em>{category[post.subject][0]}</em>
                     <strong>{post.title}</strong>
                     <p>{post.content}</p>
                   </div>
@@ -71,6 +71,7 @@ const Home = () => {
             ))}
         </CurationList>
       </CurationSection>
+
       <CurationSection>
         <header>
           <h2>고수의 노하우를 알아보세요</h2>
