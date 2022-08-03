@@ -1,5 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { BiSearch } from 'react-icons/bi';
+import { categories } from '../data';
+import apis from '../api/index';
+import { api } from '../api/index';
+import { useQuery } from '@tanstack/react-query';
+import { AiFillLike } from 'react-icons/ai';
+import { BsChatDotsFill } from 'react-icons/bs';
+
+import PostItem from '../components/community/PostItem';
 import { useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
 import { useInView } from 'react-intersection-observer';
 
@@ -45,6 +54,28 @@ const Life = () => {
     }
   };
 
+  // 조회수 목록 글 불러오기
+  const getCarousel = async () => {
+    try {
+      const res = await apis.getViewCount();
+      console.log('찍어봅니다!', res);
+      return res;
+    } catch (e) {
+      console.log('조회수 순으로 불러오기 에러', e);
+    }
+  };
+
+  // 조회수 목록 글 불러오기 쿼리
+  const { data: viewlist_query } = useQuery(['post_carousel'], getCarousel, {
+    onSuccess: (data) => {
+      // console.log('쿼리 불러오기', data);
+    },
+  });
+
+  const { data: postList } = useQuery(['postList'], getPostData);
+  // console.log(postList.content);
+  
+  // 무한 스크롤 데이터 패칭
   const {
     data: postList,
     fetchNextPage,
@@ -130,26 +161,66 @@ const Life = () => {
                           Soomgo
                         </div>
                       </div>
-                    </SliderListF>
-                  </div>
-                  <div>
-                    <SliderList></SliderList>
-                  </div>
-                  <div>
-                    <SliderList></SliderList>
-                  </div>
-                  <div>
-                    <SliderList></SliderList>
-                  </div>
-                  <div>
-                    <SliderList></SliderList>
-                  </div>
-                </StyledSlider>
-              </Wrap>
-            </>
-          )}
+                    </div>
+                  </SliderListF>
+                </div>
+                {viewlist_query.data.postList.map((v, i) => {
+                  return (
+                    <div key={i}>
+                      <SliderList>
+                        <div style={{ padding: '20px' }}>
+                          <div style={{ fontSize: '14px', color: 'gray' }}>
+                            {v.subject}
+                          </div>
+                          <div style={{ fontWeight: '600', marginTop: '13px' }}>
+                            {v.title}
+                          </div>
+                          <div
+                            style={{
+                              display: 'flex',
+                              fontSize: '15px',
+                              marginTop: '55px',
+                              color: '#c5c5c5',
+                            }}
+                          >
+                            <div
+                              style={{
+                                marginRight: '3px',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <AiFillLike />
+                            </div>
+                            <div> {v.likeCount}</div>
 
-          <ul>
+                            <div
+                              style={{
+                                marginLeft: '15px',
+                                marginRight: '6px',
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                              }}
+                            >
+                              <BsChatDotsFill
+                                style={{ transform: 'rotateY(180deg)' }}
+                              />
+                            </div>
+                            <div> {v.commentCount}</div>
+                          </div>
+                        </div>
+                      </SliderList>
+                    </div>
+                  );
+                })}
+              </StyledSlider>
+            </Wrap>
+          </>
+        )}
+
+        <ul>
             {postList &&
               postList.pages.map((page, index) => (
                 <React.Fragment key={index}>
@@ -159,8 +230,8 @@ const Life = () => {
                 </React.Fragment>
               ))}
           </ul>
-        </LifeContentSection>
-      </LifeSection>
+      </LifeContentSection>
+    </LifeSection>
       {isFetchingNextPage ? <Loading /> : <div ref={ref} />}
     </>
   );

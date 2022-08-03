@@ -21,10 +21,12 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <Suspense fallback={<Loading />}>
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <ScrollToTop />
-        <App />
-      </BrowserRouter>
+      <Provider store={store}>
+        <BrowserRouter>
+          <ScrollToTop />
+          <App />
+        </BrowserRouter>
+      </Provider>
     </QueryClientProvider>
   </Suspense>,
 );

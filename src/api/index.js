@@ -28,6 +28,7 @@ const apis = {
   addPost: (data) => api.post('posts', data),
   editPost: (postId, data) => api.put(`posts/${postId}`, data),
   deletePost: (postId) => api.delete(`posts/${postId}`),
+  getViewCount: () => api.get('posts/viewcount'),
 
   // comments
   getCommentsData: (postId) => api.get(`comments/${postId}`),
