@@ -9,7 +9,31 @@ import apis from '../../api/index';
 
 const Header = () => {
   // const dispatch = useDispatch();
-  const authCheck = localStorage.getItem('TOKEN');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [profileData, setProfileData] = useState({});
+
+  useEffect(() => {
+    const authCheck = localStorage.getItem('TOKEN');
+    const getMyProfile = async () => {
+      try {
+        const res = await apis.getAuth();
+        setProfileData(res.data);
+      } catch (e) {
+        console.log(e);
+      }
+    };
+
+    if (authCheck) {
+      setIsLoggedIn(true);
+      getMyProfile();
+    } else {
+      setIsLoggedIn(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log(profileData);
+  }, [profileData]);
 
   // 로그아웃시 헤더만 리프레쉬
   // 페이지 전체를 reload 하는거보단 헤더만 reload 되는게 클라이언트 측에서 보기 자연스러움.
@@ -18,9 +42,9 @@ const Header = () => {
 
   // login 페이지에서 useState 사용 값 넘겨받기 -> 헤더만 업데이트
   // 근데 location.state 값이 변경되지 않는데 어떻게 헤더만 업데이트되지? 되긴 되는데 이유를 모르겠음.
-  const location = useLocation();
-  const profileData = location.state;
-  console.log(profileData);
+  // const location = useLocation();
+  // const profileData = location.state;
+  // console.log(profileData);
 
   // 계정설정 모달창 토글
   const [is_mypage, setIsMypage] = useState(false);
@@ -62,7 +86,6 @@ const Header = () => {
   const acoountToggle = async () => {
     try {
       const res = await apis.toggleRole();
-
       return res;
     } catch (e) {
       console.log(e);
@@ -76,11 +99,10 @@ const Header = () => {
   const { mutate: Toggle } = useMutation(acoountToggle, {
     onSuccess: () => {
       // 유저정보 쿼리 다시 불러오기!
-      queryClient.invalidateQueries('profile_query');
+      // queryClient.invalidateQueries('profile_query');
+      setProfileData({ ...profileData, gosu: !profileData.gosu });
     },
   });
-
-  useEffect(() => {}, []);
 
   return (
     <HeaderComponent>
@@ -94,7 +116,7 @@ const Header = () => {
           </Link>
         </NavLeft>
 
-        {authCheck ? (
+        {isLoggedIn ? (
           <NavRight>
             <ul>
               <li>
@@ -118,8 +140,8 @@ const Header = () => {
                 <Modal>
                   <Wrap>
                     <h4 style={{ fontSize: '18px', color: 'gray' }}>
-                      {/* {profile_query.data.data.username}님  */}
-                      테스트님
+                      {profileData.username}
+                      {profileData.gosu ? '고수' : '고객'}님
                     </h4>
                     <div
                       style={{
@@ -135,10 +157,13 @@ const Header = () => {
                       마이페이지
                     </div>
                     <hr />
-                    {/* {profile_query.data.data.gosu ? (
+                    {profileData.gosu ? (
                       <button
                         onClick={() => {
                           Toggle();
+                          queryClient.invalidateQueries(['mypageProfile'], { refetchType: 'all' });
+                          alert('고객으로 전환되었습니다.');
+                          navigate('/mypage', {state: {gosu: false}});
                         }}
                       >
                         고객으로 전환
@@ -147,11 +172,14 @@ const Header = () => {
                       <button
                         onClick={() => {
                           Toggle();
+                          queryClient.invalidateQueries(['mypageProfile']);
+                          alert('고수 유저로 전환되었습니다.');
+                          navigate('/mypage', {state: {gosu: true}});
                         }}
                       >
                         고수로 전환
                       </button>
-                    )} */}
+                    )}
                   </Wrap>
                 </Modal>
               ) : null}
@@ -160,6 +188,9 @@ const Header = () => {
                 onClick={() => {
                   localStorage.removeItem('TOKEN');
                   setCheck(!check);
+                  setIsLoggedIn(false);
+                  alert('로그아웃 되었습니다.');
+                  navigate('/');
                 }}
               >
                 로그아웃
@@ -171,9 +202,6 @@ const Header = () => {
             <ul>
               <li>
                 <Link to="/community/soomgo-life">커뮤니티</Link>
-              </li>
-              <li>
-                <Link to="/mypage/bookmark">북마크</Link>
               </li>
               <li>
                 <Link to="/login">로그인</Link>

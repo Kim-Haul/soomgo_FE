@@ -1,36 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Link, Navigate, useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { BsChatRightText, BsBookmarkStar } from 'react-icons/bs';
 import { RiCoupon2Fill, RiUserStarLine, RiUser3Line } from 'react-icons/ri';
 import { AiOutlineRight } from 'react-icons/ai';
 import apis from '../api/index';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const Mypage = () => {
-  // FIXME: 리덕스 로그인 유무 데이터로 교체
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isGosu, setIsGosu] = useState(false);
   const queryClient = useQueryClient();
   const location = useLocation();
-  const isGosu = location.state;
-
-
-  // useEffect(() => {
-  //   const authCheck = localStorage.getItem('TOKEN');
-  //   if (authCheck) {
-  //     setIsLoggedIn(true);
-  //   }
-  //   if (!isLoggedIn) {
-  //     // FIXME: useEffect must not return anything besides a function, which is used for clean-up. You returned: [object Object]
-  //     return <Navigate to="/login" replace={true} />;
-  //   }
-  // }, []);
 
   // 유저정보 불러오기 api
   const getMyProfile = async () => {
     try {
       const res = await apis.getAuth();
-      console.log(res.data);
       return res.data;
     } catch (e) {
       console.log(e);
@@ -44,18 +29,34 @@ const Mypage = () => {
   );
 
   useEffect(() => {
-    queryClient.invalidateQueries(['mypageProfile'], { refetchType: 'all' });
     refetch();
-  }, [profile_query]);
+    queryClient.invalidateQueries(['mypageProfile']);
+    location.state
+      ? setIsGosu(location.state?.gosu)
+      : setIsGosu(profile_query?.gosu);
+  }, [location]);
+
+  // console.log(
+  //   '마이페이지 바로 진입했을 때',
+  //   location.state,
+  //   'isGosu의 상태',
+  //   isGosu,
+  //   '실제 고수 여부',
+  //   profile_query.gosu,
+  // );
 
   return (
     <Wrap>
       <Container>
         <h1>마이페이지</h1>
         <Profile to="/mypage/account-info">
-          <ProfileImg>{isGosu ? <RiUserStarLine /> : <RiUser3Line />}</ProfileImg>
+          <ProfileImg>
+            {isGosu ? <RiUserStarLine /> : <RiUser3Line />}
+          </ProfileImg>
           <div>
-            <h5>{profile_query.username} {isGosu? '고수' : '고객'}님</h5>
+            <h5>
+              {profile_query.username} {isGosu ? '고수' : '고객'}님
+            </h5>
 
             <div>{profile_query.email}</div>
             {isGosu ? <button>고수</button> : null}
