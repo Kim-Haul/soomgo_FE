@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
-import { BiSearch } from 'react-icons/bi';
-import { categories } from '../data';
-import axios from 'axios';
-import { api } from '../api/index';
-import { useQuery } from '@tanstack/react-query';
-
-import PostItem from '../components/community/PostItem';
+import { useQueryClient, useInfiniteQuery } from '@tanstack/react-query';
+import { useInView } from 'react-intersection-observer';
 
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
+import { api } from '../api/index';
+import { categories } from '../data';
+import PostItem from '../components/community/PostItem';
+import Loading from '../components/common/Loading';
+import { BiSearch } from 'react-icons/bi';
 
 const Life = () => {
   // 캐러셀 세팅
@@ -22,117 +23,145 @@ const Life = () => {
     slidesToScroll: 1,
   };
 
+  const queryClient = useQueryClient();
+  const { ref, inView } = useInView();
   const [selected, setSelected] = useState('ALL');
   const onClickCategory = (name) => {
     window.scrollTo(0, 0);
     setSelected(name);
-    console.log(name); // delayed!
   };
 
-  // const getPostData = () => {
-  //   try {
-  //     const res = axios.get('http://localhost:5001/posts');
-  //     return res;
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
-  const getPostData = async () => {
+  const getPostData = async (pageParam = 0) => {
     try {
-      const res = await api.get('/posts/cursor?lastid= &size=5&subject=ALL');
-      // console.log(res);
-      return res.data;
+      // const res = api.get('http://localhost:5001/posts');
+      const res = await api.get(
+        `/posts/cursor?lastid= &size=5&subject=${selected}`,
+      );
+      const data = res.data.content;
+      const last = res.data.last;
+      return { data, last, nextPage: pageParam + 1 };
     } catch (e) {
       console.log(e);
     }
   };
 
-  const { data: postList } = useQuery(['postList'], getPostData);
-  console.log(postList.content);
+  const {
+    data: postList,
+    fetchNextPage,
+    isFetchingNextPage,
+    refetch,
+  } = useInfiniteQuery(
+    ['postData'],
+    ({ pageParam = 0 }) => getPostData(pageParam),
+    {
+      getNextPageParam: (lastPage) =>
+        !lastPage.last ? lastPage.nextPage : undefined,
+    },
+  );
+
+  useEffect(() => {
+    if (inView) {
+      fetchNextPage();
+    }
+  }, [inView]);
+
+  useEffect(() => {
+    refetch();
+    queryClient.invalidateQueries('postData');
+  }, [selected]);
 
   return (
-    <LifeSection>
-      <h2 hidden>숨고생활</h2>
+    <>
+      <LifeSection>
+        <h2 hidden>숨고생활</h2>
 
-      <LifeCategory>
-        <ul>
-          <h3 hidden>카테고리 목록</h3>
-          {categories &&
-            // FIXME: key 추가, 데이터 없을 때 처리 다시
-            categories.map((category) => {
-              return (
-                <CategoryItem
-                  key={category.name}
-                  tabIndex="0"
-                  active={category.name === selected}
-                  onClick={() => onClickCategory(category.name)}
-                >
-                  <img src={category.img} alt="" />
-                  {category.text}
-                </CategoryItem>
-              );
-            })}
-        </ul>
-      </LifeCategory>
+        <LifeCategory>
+          <ul>
+            <h3 hidden>카테고리 목록</h3>
+            {categories &&
+              // FIXME: key 추가, 데이터 없을 때 처리 다시
+              categories.map((category) => {
+                return (
+                  <CategoryItem
+                    key={category.name}
+                    tabIndex="0"
+                    active={category.name === selected}
+                    onClick={() => onClickCategory(category.name)}
+                  >
+                    <img src={category.img} alt="" />
+                    {category.text}
+                  </CategoryItem>
+                );
+              })}
+          </ul>
+        </LifeCategory>
 
-      <LifeContentSection>
-        <SearchInput>
-          <BiSearch />
-          <label htmlFor="search-community" hidden>
-            커뮤니티 글 검색
-          </label>
-          <input
-            id="search-community"
-            type="text"
-            placeholder="키워드와 #태그 모두 검색할 수 있어요."
-          />
-        </SearchInput>
+        <LifeContentSection>
+          <SearchInput>
+            <BiSearch />
+            <label htmlFor="search-community" hidden>
+              커뮤니티 글 검색
+            </label>
+            <input
+              id="search-community"
+              type="text"
+              placeholder="키워드와 #태그 모두 검색할 수 있어요."
+            />
+          </SearchInput>
 
-        {/* TODO: 조회수 순 포스트 캐러셀 추가 */}
-        {selected === 'ALL' && (
-          <>
-            <h3>지금 가장 뜨거운 숨고픽🔥</h3>
-            <Wrap>
-              <StyledSlider {...settings}>
-                <div>
-                  <SliderListF>
-                    <div style={{ padding: '20px' }}>
-                      <div style={{ fontSize: '14px' }}>공지사항</div>
-                      <div style={{ fontWeight: '600', marginTop: '13px' }}>
-                        올바른 커뮤니티 사용법 숨고생활 가이드✏️
+          {/* TODO: 조회수 순 포스트 캐러셀 추가 */}
+          {selected === 'ALL' && (
+            <>
+              <h3>지금 가장 뜨거운 숨고픽🔥</h3>
+              <Wrap>
+                <StyledSlider {...settings}>
+                  <div>
+                    <SliderListF>
+                      <div style={{ padding: '20px' }}>
+                        <div style={{ fontSize: '14px' }}>공지사항</div>
+                        <div style={{ fontWeight: '600', marginTop: '13px' }}>
+                          올바른 커뮤니티 사용법 숨고생활 가이드✏️
+                        </div>
+                        <div
+                          div
+                          style={{ fontSize: '14px', marginTop: '30px' }}
+                        >
+                          Soomgo
+                        </div>
                       </div>
-                      <div div style={{ fontSize: '14px', marginTop: '30px' }}>
-                        Soomgo
-                      </div>
-                    </div>
-                  </SliderListF>
-                </div>
-                <div>
-                  <SliderList></SliderList>
-                </div>
-                <div>
-                  <SliderList></SliderList>
-                </div>
-                <div>
-                  <SliderList></SliderList>
-                </div>
-                <div>
-                  <SliderList></SliderList>
-                </div>
-              </StyledSlider>
-            </Wrap>
-          </>
-        )}
+                    </SliderListF>
+                  </div>
+                  <div>
+                    <SliderList></SliderList>
+                  </div>
+                  <div>
+                    <SliderList></SliderList>
+                  </div>
+                  <div>
+                    <SliderList></SliderList>
+                  </div>
+                  <div>
+                    <SliderList></SliderList>
+                  </div>
+                </StyledSlider>
+              </Wrap>
+            </>
+          )}
 
-        <ul>
-          {postList &&
-            postList.content.map((post) => (
-              <PostItem key={post.id} post={post} />
-            ))}
-        </ul>
-      </LifeContentSection>
-    </LifeSection>
+          <ul>
+            {postList &&
+              postList.pages.map((page, index) => (
+                <React.Fragment key={index}>
+                  {page.data.map((post) => (
+                    <PostItem key={post.id} post={post} />
+                  ))}
+                </React.Fragment>
+              ))}
+          </ul>
+        </LifeContentSection>
+      </LifeSection>
+      {isFetchingNextPage ? <Loading /> : <div ref={ref} />}
+    </>
   );
 };
 
@@ -219,7 +248,7 @@ const StyledSlider = styled(Slider)`
     color: black;
   }
   .slick-slide div {
-    //슬라이더  컨텐츠
+    //슬라이더 컨텐츠
     cursor: pointer;
   }
 `;
