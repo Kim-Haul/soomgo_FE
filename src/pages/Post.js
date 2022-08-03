@@ -20,7 +20,7 @@ const Post = () => {
   const location = useLocation();
   const postData = location.state;
 
-  const [isGosu, setIsGosu] = useState(false);
+  const [isGosu, setIsGosu] = useState(true);
   const [imgList, setImgList] = useState([]);
   const [tagList, setTagList] = useState([]);
   const [tag, setTag] = useState('');
@@ -47,6 +47,11 @@ const Post = () => {
   }, []);
 
   const onSubmitPost = async (data) => {
+    if (tagList.length === 0) {
+      alert('태그를 하나 이상 입력해야 합니다')
+      return;
+    }
+    
     const newData = {
       subject: data.subject,
       title: data.title,
@@ -63,6 +68,7 @@ const Post = () => {
         navigate('/community/soomgo-life');
       } catch (e) {
         console.log(e);
+        alert(e.response.data);
       }
     } else {
       try {
@@ -71,6 +77,7 @@ const Post = () => {
         navigate('/community/soomgo-life');
       } catch (e) {
         console.log(e);
+        alert(e.response.data);
       }
     }
   };
