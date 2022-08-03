@@ -11,6 +11,7 @@ import {
   faEllipsisVertical,
 } from '@fortawesome/free-solid-svg-icons';
 import { BsChatDotsFill } from 'react-icons/bs';
+import { RiUser3Line } from 'react-icons/ri';
 
 // 컴포넌트
 const Detail = () => {
@@ -184,11 +185,14 @@ const Detail = () => {
           <Subject>커뮤니티 &gt; {detail_query.data.subject}</Subject>
           <Title>{detail_query.data.title}</Title>
           <Profile>
-            <Img></Img>
+            <UserImg>
+              <RiUser3Line />
+            </UserImg>
             <UserWrap>
               <Username>{detail_query.data.writer}</Username>
               <User>
-                {new Date(detail_query.data.createdAt).toLocaleString()}·조회 {detail_query.data.viewCount}
+                {new Date(detail_query.data.createdAt).toLocaleString()}·조회{' '}
+                {detail_query.data.viewCount}
               </User>
             </UserWrap>
             <FontBtn
@@ -286,11 +290,15 @@ const Detail = () => {
           {comments_query.data.map((v, i) => {
             return (
               <CommentBox key={i}>
-                <CommentImg></CommentImg>
+                <CommentImg>
+                  <RiUser3Line />
+                </CommentImg>
                 <div>
                   <CommentUser>{v.username}</CommentUser>
                   <CommentContent>{v.content}</CommentContent>
-                  <CommentDate>{new Date(v.createdAt).toLocaleString()}</CommentDate>
+                  <CommentDate>
+                    {new Date(v.createdAt).toLocaleString()}
+                  </CommentDate>
                 </div>
                 <FontCommentbtn
                   onClick={() => {
@@ -355,11 +363,20 @@ const Profile = styled.div`
   display: flex;
   position: relative;
 `;
-const Img = styled.div`
-  border: 1px solid gray;
-  width: 48px;
-  height: 48px;
+
+const UserImg = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 44px;
+  height: 44px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
   margin-right: 10px;
+  svg {
+    width: 36px;
+    height: 36px;
+  }
 `;
 
 const UserWrap = styled.div`
@@ -510,10 +527,18 @@ const CommentBox = styled.div`
 `;
 
 const CommentImg = styled.div`
-  border: 1px solid gray;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 40px;
   height: 40px;
+  border: 1px solid #e1e1e1;
+  border-radius: 8px;
   margin-right: 10px;
+  svg {
+    width: 34px;
+    height: 34px;
+  }
 `;
 
 const FontBtn = styled.button`
@@ -522,7 +547,8 @@ const FontBtn = styled.button`
   padding: 4px 14px;
   border-radius: 50%;
   background: transparent;
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background: #eee;
   }
 `;
@@ -533,7 +559,8 @@ const FontCommentbtn = styled.button`
   padding: 1px 11px;
   border-radius: 50%;
   background: transparent;
-  &:hover, &:focus {
+  &:hover,
+  &:focus {
     background: #eee;
   }
 `;

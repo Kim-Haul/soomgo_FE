@@ -83,7 +83,7 @@ const Home = () => {
           {knowhowList &&
             knowhowList.map((knowhow) => (
               <li key={knowhow.postId}>
-                <Link to="">
+                <Link to={`/community/pro-knowhow/posts/${knowhow.postId}`}>
                   <div>
                     <img
                       src={
