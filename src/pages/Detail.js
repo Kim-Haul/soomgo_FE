@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
+
 import apis from '../api/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -9,7 +10,6 @@ import {
   faCommentDots,
   faEllipsisVertical,
 } from '@fortawesome/free-solid-svg-icons';
-import axios from '../../node_modules/axios/index';
 import { BsChatDotsFill } from 'react-icons/bs';
 
 // 컴포넌트
@@ -35,8 +35,11 @@ const Detail = () => {
   const deletePost = async () => {
     try {
       const res = await apis.deletePost(postId);
+      alert(res.data);
+      navigate('/community/soomgo-life');
     } catch (e) {
       console.log(e);
+      alert(e.response.data);
     }
   };
 
@@ -158,13 +161,6 @@ const Detail = () => {
     },
   });
 
-  // 게시글 삭제 하기
-  const { mutate: deletePostM } = useMutation(deletePost, {
-    onSuccess: () => {
-      navigate('/community/soomgo-life');
-    },
-  });
-
   // 좋아요 + 1 즉각반영하기
   const { mutate: likedCnt } = useMutation(postLiked, {
     onSuccess: () => {
@@ -209,20 +205,21 @@ const Detail = () => {
             {is_ClickPost ? (
               <Modal>
                 <ModalUl onClick={onClickEdit}>수정하기</ModalUl>
-                <ModalUl
-                  onClick={() => {
-                    deletePostM();
-                  }}
-                >
-                  삭제하기
-                </ModalUl>
+                <ModalUl onClick={deletePost}>삭제하기</ModalUl>
               </Modal>
             ) : null}
           </Profile>
           <Line />
         </TitleContainer>
         <BodyContainer>
-          <Content>{detail_query.data.content}</Content>
+          <Content>
+            {detail_query.data.content.split('\n').map((line, idx) => {
+              return <p key={idx}>{line}</p>;
+            })}
+            {detail_query.data.imgUrlList.map((src, idx) => (
+              <img key={idx} src={src} alt="" />
+            ))}
+          </Content>
           <Tag>
             {detail_query.data.tagList.map((v, i) => {
               return (
@@ -412,6 +409,10 @@ const Line = styled.hr`
 const BodyContainer = styled.div``;
 const Content = styled.div`
   margin: 20px 0;
+  img {
+    display: block;
+    margin: 0 auto;
+  }
 `;
 const Tag = styled.div`
   display: flex;

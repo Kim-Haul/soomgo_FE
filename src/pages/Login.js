@@ -4,6 +4,7 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Form from 'react-bootstrap/Form';
 import apis from '../api';
+import KakaoLoginRedirect from '../components/KakaoLoginRedirect';
 
 // import { useDispatch } from 'react-redux/es/exports';
 // import { AddUser } from '../redux/modules/userSlice';
@@ -43,9 +44,9 @@ const Login = () => {
   };
 
   return (
-    <div>
+    <LoginSection>
       <h2>로그인</h2>
-      <SignupForm onSubmit={handleSubmit(onSubmit)}>
+      <LoginForm onSubmit={handleSubmit(onSubmit)}>
         <Form.Label>이메일</Form.Label>
         <Form.Control
           type="email"
@@ -82,32 +83,73 @@ const Login = () => {
           </Form.Text>
         )}
 
-        <button disabled={!isValid}>이메일 로그인</button>
-        <button className="btn-kakao">Kakao로 시작하기</button>
-        <Link to="/signup">계정이 없으신가요?</Link>
-      </SignupForm>
-    </div>
+        <button disabled={!isValid} className="btn-login">
+          이메일 로그인
+        </button>
+        <a
+          rel="noreferrer"
+          href="http://52.78.157.63/oauth2/authorization/kakao"
+        >
+          <button type="button" className="btn-kakao">
+            <img src="/images/icon-kakaotalk.svg" alt="" />
+            Kakao로 시작하기
+          </button>
+        </a>
+
+        <Link to="/signup" className="link-signup">
+          계정이 없으신가요?
+        </Link>
+      </LoginForm>
+    </LoginSection>
   );
 };
 
 export default Login;
 
-const SignupForm = styled(Form)`
+const LoginSection = styled.section`
   display: flex;
   flex-direction: column;
-  width: 60%;
+  padding: 80px 0;
+  h2 {
+    margin-bottom: 40px;
+    text-align: center;
+    font-weight: 500;
+  }
   button {
+    width: 100%;
     margin-top: 10px;
+    &.btn-login {
+      margin-top: 40px;
+    }
     &.btn-kakao {
       background: #fee500;
       color: #050101;
+      img {
+        margin: -3px 6px 0 0;
+      }
     }
     &:disabled {
-      background: #eee;
+      background: #ddd;
       cursor: default;
       &:hover {
         filter: none;
       }
     }
   }
+  a.link-signup {
+    margin-top: 20px;
+    color: #737373;
+    text-align: center;
+  }
+`;
+
+const LoginForm = styled(Form)`
+  display: flex;
+  flex-direction: column;
+  width: 424px;
+  margin: 0 auto;
+  padding: 40px;
+  border: 1px solid #f2f2f2;
+  border-radius: 8px;
+  background: #fafafa;
 `;

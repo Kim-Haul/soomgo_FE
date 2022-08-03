@@ -6,8 +6,14 @@ import PropTypes from 'prop-types';
 const KnowhowItem = ({ post }) => {
   return (
     <KnowhowArticle>
-      <Link to={`posts/${post.id}`}>
-        <img src={post.imgurlList[0]} alt="" />
+      <Link to={`posts/${post.postId}`}>
+        <img
+          src={
+            post.imgUrlList[0] ??
+            'https://pbs.twimg.com/media/EtHubB8UUAEkgbN.jpg'
+          }
+          alt=""
+        />
         <strong>{post.title}</strong>
         <p>{post.writer}</p>
       </Link>
