@@ -1,8 +1,21 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Navigate } from 'react-router-dom';
 import styled from 'styled-components';
 import { bookmark } from '../data.js';
 
 const Accountinfo = () => {
+  // FIXME: 리덕스 로그인 유무 데이터로 교체
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // useEffect(() => {
+  //   const authCheck = localStorage.getItem('TOKEN');
+  //   if (authCheck) {
+  //     setIsLoggedIn(true);
+  //   }
+  //   if (!isLoggedIn) {
+  //     return <Navigate to="/login" replace={true} />;
+  //   }
+  // }, []);
+
   return (
     <Wrap>
       <Container>

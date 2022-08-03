@@ -1,11 +1,23 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { AiOutlineRight } from 'react-icons/ai';
 import apis from '../api/index';
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Navigate } from 'react-router-dom';
 
 const Accountinfo = () => {
+  // FIXME: 리덕스 로그인 유무 데이터로 교체
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  // useEffect(() => {
+  //   const authCheck = localStorage.getItem('TOKEN');
+  //   if (authCheck) {
+  //     setIsLoggedIn(true);
+  //   }
+  //   if (!isLoggedIn) {
+  //     return <Navigate to="/login" replace={true} />;
+  //   }
+  // }, []);
+
   const navigate = useNavigate();
 
   // 유저정보 불러오기 api
@@ -20,7 +32,7 @@ const Accountinfo = () => {
   };
 
   // 유저정보 불러오는 쿼리
-  const profile_query = useQuery(['my_profile'], getMyProfile, {
+  const profile_query = useQuery(['myInfoProfile'], getMyProfile, {
     onSuccess: (data) => {
       console.log('여기가 문젠가?', data.data);
     },
