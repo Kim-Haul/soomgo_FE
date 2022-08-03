@@ -1,45 +1,64 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import { Link, Navigate, useLocation } from 'react-router-dom';
 import { BsChatRightText, BsBookmarkStar } from 'react-icons/bs';
-import { RiCoupon2Fill } from 'react-icons/ri';
+import { RiCoupon2Fill, RiUserStarLine, RiUser3Line } from 'react-icons/ri';
 import { AiOutlineRight } from 'react-icons/ai';
 import apis from '../api/index';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 
 const Mypage = () => {
+  // FIXME: 리덕스 로그인 유무 데이터로 교체
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const queryClient = useQueryClient();
+  const location = useLocation();
+  const isGosu = location.state;
+
+
+  // useEffect(() => {
+  //   const authCheck = localStorage.getItem('TOKEN');
+  //   if (authCheck) {
+  //     setIsLoggedIn(true);
+  //   }
+  //   if (!isLoggedIn) {
+  //     // FIXME: useEffect must not return anything besides a function, which is used for clean-up. You returned: [object Object]
+  //     return <Navigate to="/login" replace={true} />;
+  //   }
+  // }, []);
+
   // 유저정보 불러오기 api
   const getMyProfile = async () => {
     try {
       const res = await apis.getAuth();
       console.log(res.data);
-      return res;
+      return res.data;
     } catch (e) {
       console.log(e);
     }
   };
 
   // 유저정보 불러오는 쿼리
-  const profile_query = useQuery(['my_profile'], getMyProfile, {
-    onSuccess: (data) => {
-      console.log('여기가 문젠가?', data.data);
-    },
-    onError: () => {
-      console.error('에러 발생!');
-    },
-  });
+  const { data: profile_query, refetch } = useQuery(
+    ['mypageProfile'],
+    getMyProfile,
+  );
+
+  useEffect(() => {
+    queryClient.invalidateQueries(['mypageProfile'], { refetchType: 'all' });
+    refetch();
+  }, [profile_query]);
 
   return (
     <Wrap>
       <Container>
         <h1>마이페이지</h1>
         <Profile to="/mypage/account-info">
-          <ProfileImg></ProfileImg>
+          <ProfileImg>{isGosu ? <RiUserStarLine /> : <RiUser3Line />}</ProfileImg>
           <div>
-            <h5>{profile_query.data.data.username} 고객님</h5>
+            <h5>{profile_query.username} {isGosu? '고수' : '고객'}님</h5>
 
-            <div>{profile_query.data.data.email}</div>
-            {profile_query.data.data.gosu ? <button>고수</button> : null}
+            <div>{profile_query.email}</div>
+            {isGosu ? <button>고수</button> : null}
           </div>
         </Profile>
         <Coupon>
@@ -125,10 +144,18 @@ const Profile = styled(Link)`
 `;
 
 const ProfileImg = styled.div`
-  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #eee;
+  border-radius: 10px;
   margin-right: 10px;
   width: 74px;
   height: 74px;
+  svg {
+    width: 60px;
+    height: 60px;
+  }
 `;
 
 const Coupon = styled.div`
