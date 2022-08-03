@@ -4,26 +4,25 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useQuery } from '@tanstack/react-query';
 
-import apis from '../api';
+import apis, { api } from '../api';
 import MainSlider from '../components/MainSlider';
 import { mainCategories } from '../data';
 import { AiOutlineRight } from 'react-icons/ai';
 
 const Home = () => {
-  const getPostData = () => {
+  const getPostData = async () => {
     try {
-      const res = axios.get('http://localhost:5001/posts');
-      // FIXME: 6개만 받아오기
-      return res;
+      const res = await api.get(`/posts?subject=ALL&page=0&size=6`);
+      return res.data.content;
     } catch (e) {
       console.log(e);
     }
   };
 
-  const getKnowhowData = () => {
+  const getKnowhowData = async () => {
     try {
-      const res = axios.get('http://localhost:5001/knowhow');
-      return res;
+      const res = await api.get(`/posts?subject=KNOWHOW&page=0&size=4`);
+      return res.data.content;
     } catch (e) {
       console.log(e);
     }
@@ -57,18 +56,19 @@ const Home = () => {
           </Link>
         </header>
         <CurationList>
-          {postList && postList.data.slice(0, 6).map((post) => (
-            <li key={post.id}>
-              <CurationContent to={`/community/soomgo-life/posts/${post.id}`}>
-                <div>
-                  <em>{post.subject}</em>
-                  <strong>{post.title}</strong>
-                  <p>{post.content}</p>
-                </div>
-                <img src="/images/icon-all.png" alt="" />
-              </CurationContent>
-            </li>
-          ))}
+          {postList &&
+            postList.map((post) => (
+              <li key={post.postId}>
+                <CurationContent to={`/community/soomgo-life/posts/${post.postId}`}>
+                  <div>
+                    <em>{post.subject}</em>
+                    <strong>{post.title}</strong>
+                    <p>{post.content}</p>
+                  </div>
+                  <img src="/images/icon-all.png" alt="" />
+                </CurationContent>
+              </li>
+            ))}
         </CurationList>
       </CurationSection>
       <CurationSection>
@@ -80,17 +80,24 @@ const Home = () => {
           </Link>
         </header>
         <KnowhowList>
-          {knowhowList && knowhowList.data.slice(0, 4).map((knowhow) => (
-            <li key={knowhow.id}>
-              <Link to="">
-                <div>
-                  <img src={knowhow.imgurlList[0]} alt="" />
-                </div>
-                <strong>{knowhow.title}</strong>
-                <em>{knowhow.writer}</em>
-              </Link>
-            </li>
-          ))}
+          {knowhowList &&
+            knowhowList.map((knowhow) => (
+              <li key={knowhow.postId}>
+                <Link to="">
+                  <div>
+                    <img
+                      src={
+                        knowhow.imgUrlList[0] ??
+                        'https://pbs.twimg.com/media/EtHubB8UUAEkgbN.jpg'
+                      }
+                      alt=""
+                    />
+                  </div>
+                  <strong>{knowhow.title}</strong>
+                  <em>{knowhow.writer}</em>
+                </Link>
+              </li>
+            ))}
         </KnowhowList>
       </CurationSection>
     </>
