@@ -33,45 +33,47 @@ const Myposts = () => {
 
   return (
     <Wrap>
-      {/* <Content>
-        <img src="/images/none.png"></img>
-        <div style={{ fontSize: '20px' }}>작성 글이 없습니다</div>
-        <div
-          style={{ color: '#b5b5b5', marginTop: '5px', textAlign: 'center' }}
-        >
-          평범한 일상부터 생활서비스에 대한
-          <br /> 정보와 질문을 올려보세요!
-        </div>
-      </Content> */}
-
-      {list_query.data.data.mypostList.map((v, i) => {
-        return (
-          <List key={i}>
-            <Tag>
-              <span>{v.subject}</span>
-            </Tag>
-            <div
-              style={{
-                fontWeight: '500',
-                marginTop: '5px',
-                marginBottom: '5px',
-              }}
-            >
-              {v.title}
-            </div>
-            <div style={{ color: 'gray' }}>{v.content.slice(0, 250)}</div>
-            <div
-              style={{
-                color: 'rgba(197,197,197)',
-                marginTop: '18px',
-                marginBottom: '18px',
-              }}
-            >
-              {v.createAt}
-            </div>
-          </List>
-        );
-      })}
+      {list_query.data.data.mypostList.length > 0 ? (
+        list_query.data.data.mypostList.map((v, i) => {
+          return (
+            <List key={i}>
+              <Tag>
+                <span>{v.subject}</span>
+              </Tag>
+              <div
+                style={{
+                  fontWeight: '500',
+                  marginTop: '5px',
+                  marginBottom: '5px',
+                }}
+              >
+                {v.title}
+              </div>
+              <div style={{ color: 'gray' }}>{v.content.slice(0, 250)}</div>
+              <div
+                style={{
+                  color: 'rgba(197,197,197)',
+                  marginTop: '18px',
+                  marginBottom: '18px',
+                }}
+              >
+                {v.createAt}
+              </div>
+            </List>
+          );
+        })
+      ) : (
+        <Content>
+          <img src="/images/none.png"></img>
+          <div style={{ fontSize: '20px' }}>작성 글이 없습니다</div>
+          <div
+            style={{ color: '#b5b5b5', marginTop: '5px', textAlign: 'center' }}
+          >
+            평범한 일상부터 생활서비스에 대한
+            <br /> 정보와 질문을 올려보세요!
+          </div>
+        </Content>
+      )}
     </Wrap>
   );
 };
@@ -79,6 +81,15 @@ const Myposts = () => {
 export default Myposts;
 
 const Wrap = styled.div``;
+
+const Content = styled.div`
+  width: 100%;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
 const List = styled.div`
   display: flex;

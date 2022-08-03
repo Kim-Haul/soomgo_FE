@@ -1,11 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import Form from 'react-bootstrap/Form';
 import apis from '../api';
 
+// import { useDispatch } from 'react-redux/es/exports';
+// import { AddUser } from '../redux/modules/userSlice';
+
 const Login = () => {
+  const [login, setLogin] = useState(false);
+  // const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
     register,
@@ -21,10 +26,17 @@ const Login = () => {
   const onSubmit = async (data) => {
     try {
       const res = await apis.login(data);
-      console.log(res);
-      localStorage.setItem('TOKEN', res.data);
+      console.log('로그인정보 찍어보기', res.data);
+      localStorage.setItem('TOKEN', res.data.token);
+      // dispatch(
+      //   AddUser({
+      //     username: res.data.username,
+      //     gosu: res.data.gosu,
+      //   }),
+      // );
       alert('로그인 성공');
-      navigate('/');
+      navigate('/', { state: login });
+      // setLogin(true); 얘를 안넣어줘도 헤더에서 자동 업데이트가 되네. 흠.
     } catch (e) {
       console.log(e);
     }
