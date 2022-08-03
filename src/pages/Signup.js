@@ -85,12 +85,15 @@ const Signup = () => {
           </Form.Text>
         )}
 
-        <button disabled={!isValid}>회원가입</button>
+        <button disabled={!isValid} className="btn-signup">
+          회원가입
+        </button>
         <a
           rel="noreferrer"
           href="http://52.78.157.63/oauth2/authorization/kakao"
         >
           <button type="button" className="btn-kakao">
+            <img src="/images/icon-kakaotalk.svg" alt="" />
             Kakao로 가입하기
           </button>
         </a>
@@ -104,16 +107,27 @@ export default Signup;
 const SignupSection = styled.section`
   display: flex;
   flex-direction: column;
-  margin: 0 auto;
+  padding: 80px 0;
+  h1 {
+    margin-bottom: 40px;
+    text-align: center;
+    font-weight: 500;
+  }
   button {
     width: 100%;
     margin-top: 10px;
+    &.btn-signup {
+      margin-top: 40px;
+    }
     &.btn-kakao {
       background: #fee500;
       color: #050101;
+      img {
+        margin: -3px 6px 0 0;
+      }
     }
     &:disabled {
-      background: #eee;
+      background: #ddd;
       cursor: default;
       &:hover {
         filter: none;
@@ -125,6 +139,10 @@ const SignupSection = styled.section`
 const SignupForm = styled(Form)`
   display: flex;
   flex-direction: column;
-  width: 60%;
+  width: 424px;
   margin: 0 auto;
+  padding: 40px;
+  border: 1px solid #f2f2f2;
+  border-radius: 8px;
+  background: #fafafa;
 `;

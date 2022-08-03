@@ -79,6 +79,7 @@ const Login = () => {
           href="http://52.78.157.63/oauth2/authorization/kakao"
         >
           <button type="button" className="btn-kakao">
+            <img src="/images/icon-kakaotalk.svg" alt="" />
             Kakao로 시작하기
           </button>
         </a>
@@ -111,6 +112,9 @@ const LoginSection = styled.section`
     &.btn-kakao {
       background: #fee500;
       color: #050101;
+      img {
+        margin: -3px 6px 0 0;
+      }
     }
     &:disabled {
       background: #ddd;
