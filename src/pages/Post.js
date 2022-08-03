@@ -20,7 +20,7 @@ const Post = () => {
   const location = useLocation();
   const postData = location.state;
 
-  const [isGosu, setIsGosu] = useState(false);
+  const [isGosu, setIsGosu] = useState(true);
   const [imgList, setImgList] = useState([]);
   const [tagList, setTagList] = useState([]);
   const [tag, setTag] = useState('');
@@ -47,30 +47,41 @@ const Post = () => {
   }, []);
 
   const onSubmitPost = async (data) => {
+    if (tagList.length === 0) {
+      alert('태그를 하나 이상 입력해야 합니다');
+      return;
+    }
+
     const newData = {
       subject: data.subject,
       title: data.title,
       tagList,
       content: data.content,
-      imgurlList: imgList.map((v) => v.src),
+      imgUrlList: imgList.map((v) => v.src),
     };
-    console.log(newData);
+    console.log(newData.imgUrlList);
 
     if (!postData) {
       try {
         const res = await apis.addPost(newData);
         alert(res.data);
-        navigate('/community/soomgo-life');
+        data.subject === 'KNOWHOW'
+          ? navigate('/community/pro-knowhow')
+          : navigate('/community/soomgo-life');
       } catch (e) {
         console.log(e);
+        alert(e.response.data);
       }
     } else {
       try {
         const res = await apis.editPost(postData.postId, newData);
         alert(res.data);
-        navigate('/community/soomgo-life');
+        data.subject === 'KNOWHOW'
+          ? navigate('/community/pro-knowhow')
+          : navigate('/community/soomgo-life');
       } catch (e) {
         console.log(e);
+        alert(e.response.data);
       }
     }
   };
@@ -111,6 +122,7 @@ const Post = () => {
 
   const removeTag = (i) => {
     setTagList((state) => state.filter((_, idx) => state[idx] !== state[i]));
+    return;
     // FIXME: 성능최적화 필요
   };
 
@@ -134,10 +146,7 @@ const Post = () => {
 
   return (
     <section>
-      <form
-        onSubmit={handleSubmit(onSubmitPost)}
-        onKeyDown={(e) => checkKeyDown(e)}
-      >
+      <form onSubmit={handleSubmit(onSubmitPost)}>
         <Row>
           <select
             name="subject"
@@ -210,6 +219,7 @@ const Post = () => {
                   value={tag}
                   onChange={(e) => addTag(e)}
                   onKeyUp={(e) => handleKeyUp(e)}
+                  onKeyDown={(e) => checkKeyDown(e)}
                   onBlur={() => handleTags()}
                   autoComplete="off"
                   placeholder="연관 태그 입력"
