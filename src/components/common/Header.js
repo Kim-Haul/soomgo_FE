@@ -42,7 +42,12 @@ const Header = () => {
             <li>
               <Link to="/signup">회원가입</Link>
             </li>
-            <button className="btn-gosu">고수가입</button>
+            <button
+              className="btn-gosu"
+              onClick={() => alert('로그인 후 고수유저로 전환해주세요 :)')}
+            >
+              고수가입
+            </button>
           </ul>
         </NavRight>
       </Navbar>
