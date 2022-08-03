@@ -35,7 +35,7 @@ const Life = () => {
     try {
       // const res = api.get('http://localhost:5001/posts');
       const res = await api.get(
-        `/posts/cursor?lastid= &size=5&subject=${selected}`,
+        `/posts?subject=${selected}&page=${pageParam}&size=5`,
       );
       const data = res.data.content;
       const last = res.data.last;
@@ -117,6 +117,7 @@ const Life = () => {
                 <StyledSlider {...settings}>
                   <div>
                     <SliderListF>
+                      {/* FIXME: inline-style 수정 필요 */}
                       <div style={{ padding: '20px' }}>
                         <div style={{ fontSize: '14px' }}>공지사항</div>
                         <div style={{ fontWeight: '600', marginTop: '13px' }}>
@@ -153,7 +154,7 @@ const Life = () => {
               postList.pages.map((page, index) => (
                 <React.Fragment key={index}>
                   {page.data.map((post) => (
-                    <PostItem key={post.id} post={post} />
+                    <PostItem key={post.postId} post={post} />
                   ))}
                 </React.Fragment>
               ))}
