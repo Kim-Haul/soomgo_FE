@@ -188,7 +188,7 @@ const Detail = () => {
             <UserWrap>
               <Username>{detail_query.data.writer}</Username>
               <User>
-                {detail_query.data.createdAt}·조회 {detail_query.data.viewCount}
+                {new Date(detail_query.data.createdAt).toLocaleString()}·조회 {detail_query.data.viewCount}
               </User>
             </UserWrap>
             <FontBtn
@@ -240,10 +240,14 @@ const Detail = () => {
               }}
             >
               <Font>
-                <FontAwesomeIcon icon={faThumbsUp} />
+                <FontAwesomeIcon
+                  icon={faThumbsUp}
+                  color={detail_query.data.liked ? '#00b39d' : 'gray'}
+                />
               </Font>
-              {/* <FontContent liked={!!detail_query.data.liked}> */}
-              <FontContent>좋아요 {detail_query.data.likeCount}</FontContent>
+              <FontContent liked={!!detail_query.data.liked}>
+                좋아요 {detail_query.data.likeCount}
+              </FontContent>
             </Like>
             <CommentCount>
               <Font>
@@ -286,7 +290,7 @@ const Detail = () => {
                 <div>
                   <CommentUser>{v.username}</CommentUser>
                   <CommentContent>{v.content}</CommentContent>
-                  <CommentDate>{v.createdAt}</CommentDate>
+                  <CommentDate>{new Date(v.createdAt).toLocaleString()}</CommentDate>
                 </div>
                 <FontCommentbtn
                   onClick={() => {
@@ -361,12 +365,6 @@ const Img = styled.div`
 const UserWrap = styled.div`
   font-size: 12px;
   margin-top: 3px;
-`;
-
-const FontBtn = styled.button`
-  background-color: transparent;
-  position: absolute;
-  right: 0px;
 `;
 
 const Modal = styled.div`
@@ -446,12 +444,8 @@ const Font = styled.div`
 `;
 
 const FontContent = styled.div`
-  /* color: ${({ liked }) => (liked ? '#00c7ae;' : 'gray')}; */
+  color: ${({ liked }) => (liked ? '#00b39d;' : 'gray')};
   font-weight: 500;
-  color: gray;
-  /* svg {
-    fill: ${({ liked }) => (liked ? '#00c7ae;' : 'gray')};
-  } */
 `;
 
 const Like = styled.div`
@@ -522,10 +516,26 @@ const CommentImg = styled.div`
   margin-right: 10px;
 `;
 
-const FontCommentbtn = styled.button`
-  background-color: transparent;
+const FontBtn = styled.button`
   position: absolute;
-  right: 40px;
+  right: 0px;
+  padding: 4px 14px;
+  border-radius: 50%;
+  background: transparent;
+  &:hover, &:focus {
+    background: #eee;
+  }
+`;
+
+const FontCommentbtn = styled.button`
+  position: absolute;
+  right: 0;
+  padding: 1px 11px;
+  border-radius: 50%;
+  background: transparent;
+  &:hover, &:focus {
+    background: #eee;
+  }
 `;
 
 const CommentUser = styled.div`
