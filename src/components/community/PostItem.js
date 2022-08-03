@@ -21,7 +21,7 @@ const PostItem = ({ post }) => {
               ))}
             </ul>
           </div>
-          <img src={post.imgUrl} alt="" />
+          <img src={post.imgUrlList[0]} alt="" />
         </PostContent>
         <PostFooter>
           <ul className="list-count">
@@ -34,7 +34,7 @@ const PostItem = ({ post }) => {
               {post.commentCount}
             </li>
           </ul>
-          <small>{post.createdAt}</small>
+          <small>{new Date(post.createdAt).toLocaleDateString()}</small>
         </PostFooter>
       </Link>
     </Item>
