@@ -234,6 +234,9 @@ const Life = () => {
                               style={{ fontWeight: '600', marginTop: '13px' }}
                             >
                               {v.title}
+                              {/* {v.title.length >= 38
+                                ? v.title.slice(0, 39) + '...'
+                                : v.title} */}
                             </SliderTitle>
                             <div
                               style={{
