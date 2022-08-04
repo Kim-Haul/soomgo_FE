@@ -45,7 +45,7 @@ const Accountinfo = () => {
   });
 
   const onClickProfileEdit = () => {
-    navigate('/mypage/account-info/settings', {
+    navigate(`/mypage/account-info/settings/${params.gosu}`, {
       state: profile_query.data.data,
     });
   };

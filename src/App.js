@@ -32,7 +32,10 @@ const App = () => {
 
           <Route path="/mypage" element={<Mypage />} />
           <Route path="/mypage/account-info/:gosu" element={<Accountinfo />} />
-          <Route path="/mypage/account-info/settings" element={<Settings />} />
+          <Route
+            path="/mypage/account-info/settings/:gosu"
+            element={<Settings />}
+          />
           <Route path="/mypage/bookmark" element={<Bookmarkclip />} />
           <Route path="/mypage/community" element={<Mypageactivity />}>
             <Route path="/mypage/community/posts" element={<Mypost />} />

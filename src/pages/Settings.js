@@ -4,11 +4,13 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useSelector } from 'react-redux';
 import Form from 'react-bootstrap/Form';
+import { useParams } from 'react-router-dom';
 
 import apis from '../api';
 import { RiErrorWarningFill } from 'react-icons/ri';
 
 const Settings = () => {
+  const params = useParams();
   const navigate = useNavigate();
   const location = useLocation();
   const profileData = location.state;
@@ -31,7 +33,8 @@ const Settings = () => {
   const onSubmit = async (data) => {
     try {
       const res = await apis.editAuth(data);
-      navigate('/mypage/account-info');
+      window.alert('정보 수정이 완료되었습니다!');
+      navigate(`/mypage/account-info/${params.gosu}`);
     } catch (e) {
       console.log(e);
     }
@@ -125,7 +128,7 @@ const Settings = () => {
               bottom: '-20px',
             }}
           >
-            <Link to="/mypage/account-info">
+            <Link to={`/mypage/account-info/${params.gosu}`}>
               <button
                 style={{
                   marginRight: '15px',
