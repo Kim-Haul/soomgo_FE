@@ -37,6 +37,7 @@ const Login = () => {
       // );
       alert('로그인 성공');
       navigate('/', { state: login });
+      window.location.replace('/');
       // setLogin(true); 얘를 안넣어줘도 헤더에서 자동 업데이트가 되네. 흠.
     } catch (e) {
       console.log(e);

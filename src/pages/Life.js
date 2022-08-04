@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import styled, { css } from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 import {
   useQuery,
   useQueryClient,
@@ -20,6 +21,7 @@ import { AiFillLike } from 'react-icons/ai';
 import { BsChatDotsFill } from 'react-icons/bs';
 
 const Life = () => {
+  const navigate = useNavigate();
   // 캐러셀 세팅
   const settings = {
     dots: false,
@@ -65,7 +67,7 @@ const Life = () => {
   // 조회수 목록 글 불러오기 쿼리
   const { data: viewlist_query } = useQuery(['post_carousel'], getCarousel, {
     onSuccess: (data) => {
-      // console.log('쿼리 불러오기', data);
+      // console.log('쿼리 불러오기', data.data.postList);
     },
   });
 
@@ -160,7 +162,13 @@ const Life = () => {
                   {viewlist_query.data.postList.map((v, i) => {
                     return (
                       <div key={i}>
-                        <SliderList>
+                        <SliderList
+                          onClick={() => {
+                            navigate(
+                              `/community/soomgo-life/posts/${v.postId}`,
+                            );
+                          }}
+                        >
                           <div style={{ padding: '20px' }}>
                             <div style={{ fontSize: '14px', color: 'gray' }}>
                               {v.subject}

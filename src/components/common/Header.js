@@ -161,9 +161,11 @@ const Header = () => {
                       <button
                         onClick={() => {
                           Toggle();
-                          queryClient.invalidateQueries(['mypageProfile'], { refetchType: 'all' });
+                          queryClient.invalidateQueries(['mypageProfile'], {
+                            refetchType: 'all',
+                          });
                           alert('고객으로 전환되었습니다.');
-                          navigate('/mypage', {state: {gosu: false}});
+                          navigate('/mypage', { state: { gosu: false } });
                         }}
                       >
                         고객으로 전환
@@ -174,7 +176,7 @@ const Header = () => {
                           Toggle();
                           queryClient.invalidateQueries(['mypageProfile']);
                           alert('고수 유저로 전환되었습니다.');
-                          navigate('/mypage', {state: {gosu: true}});
+                          navigate('/mypage', { state: { gosu: true } });
                         }}
                       >
                         고수로 전환

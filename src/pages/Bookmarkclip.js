@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { bookmark } from '../data.js';
+import apis from '../api/index';
+import { useQuery } from '@tanstack/react-query';
 
 const Accountinfo = () => {
   // FIXME: 리덕스 로그인 유무 데이터로 교체
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const navigate = useNavigate();
   // useEffect(() => {
   //   const authCheck = localStorage.getItem('TOKEN');
   //   if (authCheck) {
@@ -16,12 +19,29 @@ const Accountinfo = () => {
   //   }
   // }, []);
 
+  // 북마크 목록 불러오기 api
+  const getBookmarkedPosts = async () => {
+    try {
+      const res = await apis.getBookmarkedPosts();
+      return res;
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  // 북마크 목록 가져오기 쿼리
+  const { data: bookmark_list } = useQuery(['book_list'], getBookmarkedPosts, {
+    onSuccess: (data) => {
+      console.log('쿼리 불러오기', data.data);
+    },
+  });
+
   return (
     <Wrap>
       <Container>
         <h1>북마크</h1>
         <Cardlist>
-          {bookmark.map((v, i) => {
+          {bookmark_list.data.map((v, i) => {
             return (
               <Card key={i}>
                 <div style={{ fontWeight: '700', fontSize: '18px' }}>
@@ -34,7 +54,16 @@ const Accountinfo = () => {
                   {v.content.slice(0, 60)}
                   <span style={{ color: 'gray' }}> ...</span>
                 </div>
-                <button>자세히보기</button>
+
+                <Link to={`/community/pro-knowhow/posts/${v.postId}`}>
+                  <button
+                    onClick={() => {
+                      navigate(`/community/pro-knowhow/posts/${v.postId}`);
+                    }}
+                  >
+                    자세히보기
+                  </button>
+                </Link>
               </Card>
             );
           })}
