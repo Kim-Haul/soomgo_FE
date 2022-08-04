@@ -3,6 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
+import { category } from '../data';
 
 import apis from '../api/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -193,7 +194,9 @@ const Detail = () => {
     <Container>
       <DetialContainer>
         <TitleContainer>
-          <Subject>커뮤니티 &gt; {detail_query.data.subject}</Subject>
+          <Subject>
+            커뮤니티 &gt; {category[detail_query.data.subject][0]}
+          </Subject>
           <Title>{detail_query.data.title}</Title>
           <Profile>
             <UserImg>
