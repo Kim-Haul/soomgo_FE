@@ -242,9 +242,15 @@ const UserWrap = styled.div`
 `;
 
 const FontBtn = styled.button`
-  background-color: transparent;
   position: absolute;
   right: 0px;
+  padding: 4px 14px;
+  border-radius: 50%;
+  background: transparent;
+  &:hover,
+  &:focus {
+    background: #eee;
+  }
 `;
 
 const Modal = styled.div`
