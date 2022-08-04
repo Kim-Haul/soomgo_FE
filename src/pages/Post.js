@@ -262,7 +262,7 @@ const Post = () => {
             {...register('content', {
               required: true,
               minLength: 2,
-              maxLength: 700,
+              maxLength: 5000,
             })}
           />
         </Row>
