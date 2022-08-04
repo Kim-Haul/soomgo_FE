@@ -195,7 +195,8 @@ const Detail = () => {
       <DetialContainer>
         <TitleContainer>
           <Subject>
-            <Link to="/community/soomgo-life">커뮤니티</Link> &gt; {category[detail_query.data.subject][0]}
+            <Link to="/community/soomgo-life">커뮤니티</Link> &gt;{' '}
+            {category[detail_query.data.subject][0]}
           </Subject>
           <Title>{detail_query.data.title}</Title>
           <Profile>
@@ -317,16 +318,17 @@ const Detail = () => {
                     {new Date(v.createdAt).toLocaleString()}
                   </CommentDate>
                 </div>
-                <FontCommentbtn
-                  onClick={() => {
-                    onClickComment(i);
-                  }}
-                >
-                  <FontAwesomeIcon icon={faEllipsisVertical} color="black" />
-                </FontCommentbtn>
+                {v.owner && (
+                  <FontCommentbtn
+                    onClick={() => {
+                      onClickComment(i);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faEllipsisVertical} color="black" />
+                  </FontCommentbtn>
+                )}
                 {is_ClickComment && CommentIndex == i ? (
                   <CommentModal>
-                    <CommentModalUl>수정하기</CommentModalUl>
                     <CommentModalUl
                       onClick={() => {
                         deleteCmt(v.id);
