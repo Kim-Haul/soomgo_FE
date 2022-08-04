@@ -53,6 +53,7 @@ const Life = () => {
 
   const getPostData = async (pageParam = 0) => {
     try {
+      // const res = api.get('http://localhost:5001/posts');
       const res = await api.get(
         `/posts?subject=${selected}&page=${pageParam}&size=5`,
       );

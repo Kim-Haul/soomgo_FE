@@ -443,9 +443,11 @@ const Line = styled.hr`
 const BodyContainer = styled.div``;
 const Content = styled.div`
   margin: 20px 0;
+  line-height: 30px;
   img {
     display: block;
     margin: 0 auto;
+    width: 100%;
   }
 `;
 const Tag = styled.div`

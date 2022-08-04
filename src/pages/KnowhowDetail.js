@@ -287,6 +287,7 @@ const Line = styled.hr`
 const BodyContainer = styled.div``;
 const Content = styled.div`
   margin: 20px 0 60px;
+  line-height: 30px;
 `;
 
 const BookmarkContainer = styled.div`
