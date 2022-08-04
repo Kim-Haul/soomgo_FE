@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
-import { mypost } from '../data';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { category } from '../data';
 import apis from '../api/index';
 
 const Myposts = () => {
@@ -38,7 +38,7 @@ const Myposts = () => {
           return (
             <List key={i}>
               <Tag>
-                <span>{v.subject}</span>
+                <span>{category[v.subject][0]}</span>
               </Tag>
               <div
                 style={{

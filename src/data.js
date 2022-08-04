@@ -38,6 +38,7 @@ export const category = {
   FINDGOSU: ['고수찾아요', '/images/icon-findgosu.png'],
   TOGETHER: ['함께해요', '/images/icon-together.png'],
   FREE: ['일상', '/images/icon-free.png'],
+  KNOWHOW: ['고수의노하우'],
 };
 
 export const mainCategories = [
