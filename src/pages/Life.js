@@ -230,11 +230,11 @@ const Life = () => {
                             >
                               {category[v.subject][0]}
                             </div>
-                            <div
+                            <SliderTitle
                               style={{ fontWeight: '600', marginTop: '13px' }}
                             >
                               {v.title}
-                            </div>
+                            </SliderTitle>
                             <div
                               style={{
                                 display: 'flex',
@@ -471,4 +471,13 @@ const SliderList = styled.div`
   border-radius: 20px;
   background-color: #f4f4f4;
   margin-right: 10px;
+`;
+
+const SliderTitle = styled.div`
+  overflow: hidden;
+  display: -webkit-box;
+  text-overflow: ellipsis;
+  word-break: break-all;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 `;

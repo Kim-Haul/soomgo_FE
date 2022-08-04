@@ -68,9 +68,15 @@ const PostContent = styled.div`
   display: flex;
   justify-content: space-between;
   strong {
-    display: block;
+    overflow: hidden;
+    display: -webkit-box;
+    padding-right: 5px;
     margin-bottom: 4px;
     font-weight: 500;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   p {
     overflow: hidden;
