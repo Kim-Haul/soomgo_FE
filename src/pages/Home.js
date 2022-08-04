@@ -209,6 +209,9 @@ const KnowhowList = styled.ul`
   justify-content: space-between;
   gap: 8px;
   margin: 30px 0 50px;
+  li {
+    flex: 1;
+  }
   li a {
     div {
       overflow: hidden;
@@ -224,6 +227,7 @@ const KnowhowList = styled.ul`
   img {
     width: 100%;
     object-fit: cover;
+    aspect-ratio: 4 / 3;
     transition: 0.4s all cubic-bezier(0.4, 0, 0.2, 1);
   }
   strong {
