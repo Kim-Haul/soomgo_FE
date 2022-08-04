@@ -22,7 +22,7 @@ const PostItem = ({ post }) => {
               ))}
             </ul>
           </div>
-          <img src={post.imgUrlList[0]} alt="" />
+          {post.imgUrlList[0] && <img src={post.imgUrlList[0]} alt="" /> }
         </PostContent>
         <PostFooter>
           <ul className="list-count">
