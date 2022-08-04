@@ -59,13 +59,17 @@ const Home = () => {
           {postList &&
             postList.map((post) => (
               <li key={post.postId}>
-                <CurationContent to={`/community/soomgo-life/posts/${post.postId}`}>
+                <CurationContent
+                  to={`/community/soomgo-life/posts/${post.postId}`}
+                >
                   <div>
                     <em>{category[post.subject][0]}</em>
                     <strong>{post.title}</strong>
                     <p>{post.content}</p>
                   </div>
-                  <img src="/images/icon-all.png" alt="" />
+                  {post.imgUrlList[0] && (
+                    <img src={post.imgUrlList[0]} alt="" />
+                  )}
                 </CurationContent>
               </li>
             ))}
@@ -201,6 +205,7 @@ const CurationContent = styled(Link)`
     width: 64px;
     height: 64px;
     border-radius: 8px;
+    object-fit: cover;
   }
 `;
 
@@ -209,6 +214,9 @@ const KnowhowList = styled.ul`
   justify-content: space-between;
   gap: 8px;
   margin: 30px 0 50px;
+  li {
+    flex: 1;
+  }
   li a {
     div {
       overflow: hidden;
@@ -224,6 +232,7 @@ const KnowhowList = styled.ul`
   img {
     width: 100%;
     object-fit: cover;
+    aspect-ratio: 4 / 3;
     transition: 0.4s all cubic-bezier(0.4, 0, 0.2, 1);
   }
   strong {
