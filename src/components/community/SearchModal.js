@@ -76,10 +76,13 @@ const Keyword = styled.p`
 
 const SearchList = styled.ul`
   li {
-    padding: 10px;
-    border-radius: 8px;
     font-size: 14px;
+    border-radius: 8px;
     cursor: pointer;
+    a {
+      display: block;
+      padding: 10px;
+    }
     &:hover {
       background: rgba(0, 0, 0, 0.05);
     }
