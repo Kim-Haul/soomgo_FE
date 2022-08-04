@@ -39,34 +39,52 @@ const Accountinfo = () => {
     <Wrap>
       <Container>
         <h1>북마크</h1>
-        <Cardlist>
-          {bookmark_list.data.map((v, i) => {
-            return (
-              <Card key={i}>
-                <div style={{ fontWeight: '700', fontSize: '18px' }}>
-                  {v.title}
-                </div>
-                <div style={{ fontSize: '14px', color: 'gray' }}>
-                  {v.username}
-                </div>
-                <div style={{ marginTop: '10px' }}>
-                  {v.content.slice(0, 60)}
-                  <span style={{ color: 'gray' }}> ...</span>
-                </div>
+        {bookmark_list.data.length >= 1 ? (
+          <Cardlist>
+            {bookmark_list.data.map((v, i) => {
+              return (
+                <Card key={i}>
+                  <div style={{ fontWeight: '700', fontSize: '18px' }}>
+                    {v.title}
+                  </div>
+                  <div style={{ fontSize: '14px', color: 'gray' }}>
+                    {v.username}
+                  </div>
+                  <div style={{ marginTop: '10px' }}>
+                    {v.content.slice(0, 60)}
+                    <span style={{ color: 'gray' }}> ...</span>
+                  </div>
 
-                <Link to={`/community/pro-knowhow/posts/${v.postId}`}>
-                  <button
-                    onClick={() => {
-                      navigate(`/community/pro-knowhow/posts/${v.postId}`);
-                    }}
-                  >
-                    자세히보기
-                  </button>
-                </Link>
-              </Card>
-            );
-          })}
-        </Cardlist>
+                  <Link to={`/community/pro-knowhow/posts/${v.postId}`}>
+                    <button
+                      onClick={() => {
+                        navigate(`/community/pro-knowhow/posts/${v.postId}`);
+                      }}
+                    >
+                      자세히보기
+                    </button>
+                  </Link>
+                </Card>
+              );
+            })}
+          </Cardlist>
+        ) : (
+          <Content>
+            <img src="/images/none.png"></img>
+            <div style={{ fontSize: '20px' }}>북마크한 글이 없습니다!</div>
+            <div
+              style={{
+                color: '#b5b5b5',
+                marginTop: '5px',
+                textAlign: 'center',
+              }}
+            >
+              고수들의 글을 둘러보고
+              <br />
+              마음에 드는 글을 북마크해보세요!
+            </div>
+          </Content>
+        )}
       </Container>
     </Wrap>
   );
@@ -120,4 +138,13 @@ const Card = styled.div`
     border-radius: 5px;
     bottom: 10px;
   }
+`;
+
+const Content = styled.div`
+  width: 100%;
+  min-height: 500px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 `;

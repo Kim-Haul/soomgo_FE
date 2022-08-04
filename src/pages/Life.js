@@ -35,7 +35,7 @@ const Life = () => {
   const queryClient = useQueryClient();
   const { ref, inView } = useInView();
   const [selected, setSelected] = useState('ALL');
-  const [isModalShown, setIsModalShown] = useState(true);
+  const [isModalShown, setIsModalShown] = useState(false);
   const [typed, setTyped] = useState('');
   const onClickCategory = (name) => {
     window.scrollTo(0, 0);
@@ -151,16 +151,37 @@ const Life = () => {
                 <ModalContainer>
                   <SearchList>
                     {/* 검색 결과 map */}
-                    <li><BiSearch />검색결과</li>
-                    <li><BiSearch />검색결과</li>
-                    <li><BiSearch />검색결과</li>
-                    <li><BiSearch />검색결과</li>
-                    <li><BiSearch />검색결과</li>
-                    <li><BiSearch />검색결과</li>
-                    <li><BiSearch />검색결과</li>
+                    <li>
+                      <BiSearch />
+                      검색결과
+                    </li>
+                    <li>
+                      <BiSearch />
+                      검색결과
+                    </li>
+                    <li>
+                      <BiSearch />
+                      검색결과
+                    </li>
+                    <li>
+                      <BiSearch />
+                      검색결과
+                    </li>
+                    <li>
+                      <BiSearch />
+                      검색결과
+                    </li>
+                    <li>
+                      <BiSearch />
+                      검색결과
+                    </li>
+                    <li>
+                      <BiSearch />
+                      검색결과
+                    </li>
                   </SearchList>
                   <BtnClose>
-                    <IoClose onClick={() => setIsModalShown(false)}/>
+                    <IoClose onClick={() => setIsModalShown(false)} />
                   </BtnClose>
                 </ModalContainer>
               </SearchModal>
@@ -220,6 +241,8 @@ const Life = () => {
                                 fontSize: '15px',
                                 marginTop: '55px',
                                 color: '#c5c5c5',
+                                position: 'absolute',
+                                bottom: '20px',
                               }}
                             >
                               <div
@@ -416,13 +439,13 @@ const BtnClose = styled.button`
 
 const Wrap = styled.div`
   margin: 20px 0px;
-  height: 100px;
 `;
 
 const StyledSlider = styled(Slider)`
   height: 180px;
   width: 100%;
   position: relative;
+  margin-bottom: 40px;
   .slick-prev:before,
   .slick-next:before {
     color: black;

@@ -1,13 +1,17 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useQuery } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { AiOutlineRight } from 'react-icons/ai';
+import { RiUserStarLine, RiUser3Line } from 'react-icons/ri';
+import { useParams } from 'react-router-dom';
 
 import apis from '../api/index';
 
 const Accountinfo = () => {
+  const params = useParams();
+
   const navigate = useNavigate();
   const { isLoggedIn } = useSelector((state) => state.user);
 
@@ -59,7 +63,9 @@ const Accountinfo = () => {
     <Wrap>
       <Container>
         <h1>계정 설정</h1>
-        <ProfileImg></ProfileImg>
+        <ProfileImg>
+          {params.gosu === 'true' ? <RiUserStarLine /> : <RiUser3Line />}
+        </ProfileImg>
         <List>
           <li>
             <div
@@ -167,6 +173,15 @@ const ProfileImg = styled.div`
   width: 100px;
   height: 100px;
   margin: 80px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  svg {
+    width: 80px;
+    height: 80px;
+  }
 `;
 
 const List = styled.ul`
