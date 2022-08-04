@@ -86,14 +86,14 @@ const KnowhowDetail = () => {
   const { mutate: onClickAddBm } = useMutation(addBm, {
     onSuccess: () => {
       queryClient.invalidateQueries('bookmark');
-    }
-  })
+    },
+  });
 
   const { mutate: onClickRemoveBm } = useMutation(removeBm, {
     onSuccess: () => {
       queryClient.invalidateQueries('bookmark');
-    }
-  })
+    },
+  });
 
   return (
     <Container>
@@ -113,17 +113,19 @@ const KnowhowDetail = () => {
                 {new Date(knowhowInfo.createdAt).toLocaleDateString()}
               </User>
             </UserWrap>
-            <FontBtn
-              onClick={() => {
-                onClickPost();
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faEllipsisVertical}
-                size="2x"
-                color="black"
-              />
-            </FontBtn>
+            {knowhowInfo.owner && (
+              <FontBtn
+                onClick={() => {
+                  onClickPost();
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faEllipsisVertical}
+                  size="2x"
+                  color="black"
+                />
+              </FontBtn>
+            )}
             {is_ClickPost ? (
               <Modal>
                 <ModalUl onClick={onClickEditPost}>수정하기</ModalUl>

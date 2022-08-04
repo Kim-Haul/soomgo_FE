@@ -209,17 +209,19 @@ const Detail = () => {
                 {detail_query.data.viewCount}
               </User>
             </UserWrap>
-            <FontBtn
-              onClick={() => {
-                onClickPost();
-              }}
-            >
-              <FontAwesomeIcon
-                icon={faEllipsisVertical}
-                size="2x"
-                color="black"
-              />
-            </FontBtn>
+            {detail_query.data.owner && (
+              <FontBtn
+                onClick={() => {
+                  onClickPost();
+                }}
+              >
+                <FontAwesomeIcon
+                  icon={faEllipsisVertical}
+                  size="2x"
+                  color="black"
+                />
+              </FontBtn>
+            )}
             {is_ClickPost ? (
               <Modal>
                 <ModalUl onClick={onClickEdit}>수정하기</ModalUl>
