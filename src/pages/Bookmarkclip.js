@@ -50,10 +50,9 @@ const Accountinfo = () => {
                   <div style={{ fontSize: '14px', color: 'gray' }}>
                     {v.username}
                   </div>
-                  <div style={{ marginTop: '10px' }}>
-                    {v.content.slice(0, 60)}
-                    <span style={{ color: 'gray' }}> ...</span>
-                  </div>
+                  <BookmarkContent style={{ marginTop: '10px' }}>
+                    {v.content}
+                  </BookmarkContent>
 
                   <Link to={`/community/pro-knowhow/posts/${v.postId}`}>
                     <button
@@ -114,11 +113,16 @@ const Card = styled.div`
   position: relative;
   border: 1px solid #e1e1e1;
   border-radius: 5px;
-  padding: 15px;
+  padding: 20px 15px 15px;
   width: 280px;
   height: 260px;
   margin-right: 30px;
   margin-bottom: 30px;
+
+  a button {
+    font-size: 16px;
+    font-weight: 500;
+  }
 
   @media (max-width: 1000px) {
     width: 400px;
@@ -136,7 +140,7 @@ const Card = styled.div`
     font-size: 19px;
     position: absolute;
     border-radius: 5px;
-    bottom: 10px;
+    bottom: 15px;
   }
 `;
 
@@ -147,4 +151,13 @@ const Content = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
+`;
+
+const BookmarkContent = styled.div`
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
 `;
