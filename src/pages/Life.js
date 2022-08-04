@@ -13,7 +13,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 
 import apis, { api } from '../api/index';
-import { categories } from '../data';
+import { categories, category } from '../data';
 import PostItem from '../components/community/PostItem';
 import Loading from '../components/common/Loading';
 import { BiSearch } from 'react-icons/bi';
@@ -170,8 +170,8 @@ const Life = () => {
                           }}
                         >
                           <div style={{ padding: '20px' }}>
-                            <div style={{ fontSize: '14px', color: 'gray' }}>
-                              {v.subject}
+                            <div style={{ fontSize: '12px', color: '#888', fontWeight: '500' }}>
+                              {category[v.subject][0]}
                             </div>
                             <div
                               style={{ fontWeight: '600', marginTop: '13px' }}

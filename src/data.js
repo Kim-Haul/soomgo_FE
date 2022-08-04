@@ -31,6 +31,15 @@ export const categories = [
   },
 ];
 
+export const category = {
+  ALL: ['전체', '/images/icon-all.png'],
+  QNA: ['궁금해요', '/images/icon-qna.png'],
+  HOWMUCH: ['얼마예요', '/images/icon-howmuch.png'],
+  FINDGOSU: ['고수찾아요', '/images/icon-findgosu.png'],
+  TOGETHER: ['함께해요', '/images/icon-together.png'],
+  FREE: ['일상', '/images/icon-free.png'],
+};
+
 export const mainCategories = [
   {
     id: 'main-cat-0',

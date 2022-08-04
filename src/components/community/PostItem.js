@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import { category } from '../../data';
 import { AiFillLike } from 'react-icons/ai';
 import { FaCommentDots } from 'react-icons/fa';
 
@@ -10,7 +11,7 @@ const PostItem = ({ post }) => {
   return (
     <Item>
       <Link to={`posts/${post.postId}`}>
-        <em>{post.subject}</em>
+        <em>{category[post.subject][0]}</em>
         <PostContent>
           <div>
             <strong>{post.title}</strong>

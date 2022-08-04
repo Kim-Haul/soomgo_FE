@@ -9,18 +9,27 @@ import {
   getDownloadURL,
   deleteObject,
 } from 'firebase/storage';
-import apis from '../api';
+import { useSelector } from 'react-redux';
 
+import apis from '../api';
 import { categories } from '../data';
 import { MdAddAPhoto } from 'react-icons/md';
 import { IoClose } from 'react-icons/io5';
 
 const Post = () => {
   const navigate = useNavigate();
+  const { isLoggedIn, gosu } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert('로그인 한 유저만 이용할 수 있습니다.');
+      navigate('/login');
+    }
+  }, []);
+  if (!isLoggedIn) return;
+
   const location = useLocation();
   const postData = location.state;
-
-  const [isGosu, setIsGosu] = useState(true);
   const [imgList, setImgList] = useState([]);
   const [tagList, setTagList] = useState([]);
   const [tag, setTag] = useState('');
@@ -164,7 +173,7 @@ const Post = () => {
                 {cat.text}
               </option>
             ))}
-            {isGosu && <option value="KNOWHOW">고수의노하우</option>}
+            {gosu && <option value="KNOWHOW">고수의노하우</option>}
           </select>
           <button disabled={!isValid}>등록</button>
         </Row>
@@ -195,7 +204,6 @@ const Post = () => {
           />
         </Row>
 
-        {/* TODO: 노하우 카테고리 선택했을 때 안보이기 */}
         <RowTag
           onClick={() => {
             tagList.length < 5 && setIsShown(true);

@@ -1,23 +1,25 @@
+
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { bookmark } from '../data.js';
 import apis from '../api/index';
 import { useQuery } from '@tanstack/react-query';
 
 const Accountinfo = () => {
-  // FIXME: 리덕스 로그인 유무 데이터로 교체
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   const authCheck = localStorage.getItem('TOKEN');
-  //   if (authCheck) {
-  //     setIsLoggedIn(true);
-  //   }
-  //   if (!isLoggedIn) {
-  //     return <Navigate to="/login" replace={true} />;
-  //   }
-  // }, []);
+  const { isLoggedIn } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert('로그인 한 유저만 이용할 수 있습니다.');
+      navigate('/login');
+    }
+  }, []);
+  if (!isLoggedIn) return;
+
 
   // 북마크 목록 불러오기 api
   const getBookmarkedPosts = async () => {
