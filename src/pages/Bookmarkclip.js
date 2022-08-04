@@ -44,9 +44,9 @@ const Accountinfo = () => {
             {bookmark_list.data.map((v, i) => {
               return (
                 <Card key={i}>
-                  <div style={{ fontWeight: '700', fontSize: '18px' }}>
+                  <BookmarkTitle style={{ fontWeight: '700', fontSize: '18px' }}>
                     {v.title}
-                  </div>
+                  </BookmarkTitle>
                   <div style={{ fontSize: '14px', color: 'gray' }}>
                     {v.username}
                   </div>
@@ -153,11 +153,20 @@ const Content = styled.div`
   justify-content: center;
 `;
 
+const BookmarkTitle = styled.div`
+    overflow: hidden;
+    display: -webkit-box;
+    text-overflow: ellipsis;
+    word-break: break-all;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+`;
+
 const BookmarkContent = styled.div`
     overflow: hidden;
     display: -webkit-box;
     text-overflow: ellipsis;
     word-break: break-all;
-    -webkit-line-clamp: 4;
+    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 `;
