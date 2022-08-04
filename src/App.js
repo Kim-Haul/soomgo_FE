@@ -31,7 +31,7 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
 
           <Route path="/mypage" element={<Mypage />} />
-          <Route path="/mypage/account-info" element={<Accountinfo />} />
+          <Route path="/mypage/account-info/:gosu" element={<Accountinfo />} />
           <Route path="/mypage/account-info/settings" element={<Settings />} />
           <Route path="/mypage/bookmark" element={<Bookmarkclip />} />
           <Route path="/mypage/community" element={<Mypageactivity />}>
@@ -43,12 +43,21 @@ const App = () => {
             <Route path="/community/soomgo-life" element={<Life />} />
             <Route path="/community/pro-knowhow" element={<Knowhow />} />
           </Route>
-          <Route path="/community/soomgo-life/posts/:postId" element={<Detail />} />
-          <Route path="/community/pro-knowhow/posts/:postId" element={<KnowhowDetail />} />
+          <Route
+            path="/community/soomgo-life/posts/:postId"
+            element={<Detail />}
+          />
+          <Route
+            path="/community/pro-knowhow/posts/:postId"
+            element={<KnowhowDetail />}
+          />
           <Route path="/community/soomgo-life/post" element={<Post />} />
         </Route>
 
-        <Route path="/oauth2/redirect/:token" element={<KakaoLoginRedirect />} />
+        <Route
+          path="/oauth2/redirect/:token"
+          element={<KakaoLoginRedirect />}
+        />
       </Routes>
     </>
   );

@@ -287,6 +287,7 @@ const Detail = () => {
               placeholder="댓글을 남겨보세요"
               ref={comment_input}
               onChange={onCommentHandler}
+              maxLength={255}
             />
             {is_comment ? (
               <Btn

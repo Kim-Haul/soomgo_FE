@@ -48,6 +48,7 @@ const Mypage = () => {
       : setIsGosu(profile_query?.gosu);
   }, [location]);
 
+  const params = isGosu;
   // console.log(
   //   '마이페이지 바로 진입했을 때',
   //   location.state,
@@ -61,7 +62,7 @@ const Mypage = () => {
     <Wrap>
       <Container>
         <h1>마이페이지</h1>
-        <Profile to="/mypage/account-info">
+        <Profile to={`account-info/${params}`}>
           <ProfileImg>
             {isGosu ? <RiUserStarLine /> : <RiUser3Line />}
           </ProfileImg>
