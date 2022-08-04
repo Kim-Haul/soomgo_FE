@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
 import { useSelector } from 'react-redux';
@@ -195,7 +195,7 @@ const Detail = () => {
       <DetialContainer>
         <TitleContainer>
           <Subject>
-            커뮤니티 &gt; {category[detail_query.data.subject][0]}
+            <Link to="/community/soomgo-life">커뮤니티</Link> &gt; {category[detail_query.data.subject][0]}
           </Subject>
           <Title>{detail_query.data.title}</Title>
           <Profile>
