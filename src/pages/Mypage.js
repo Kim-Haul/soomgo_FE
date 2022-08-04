@@ -1,16 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
+
 import { BsChatRightText, BsBookmarkStar } from 'react-icons/bs';
 import { RiCoupon2Fill, RiUserStarLine, RiUser3Line } from 'react-icons/ri';
 import { AiOutlineRight } from 'react-icons/ai';
 import apis from '../api/index';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const Mypage = () => {
+  const navigate = useNavigate();
   const [isGosu, setIsGosu] = useState(false);
   const queryClient = useQueryClient();
   const location = useLocation();
+  const { isLoggedIn } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert('로그인 한 유저만 이용할 수 있습니다.');
+      navigate('/login');
+    }
+  }, []);
+  if (!isLoggedIn) return;
 
   // 유저정보 불러오기 api
   const getMyProfile = async () => {

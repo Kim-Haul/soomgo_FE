@@ -1,7 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FaRegBookmark, FaBookmark } from 'react-icons/fa';
@@ -12,6 +14,16 @@ import apis from '../api/index';
 const KnowhowDetail = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
+  const { isLoggedIn, gosu } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert('로그인 한 유저만 게시글을 확인할 수 있습니다.');
+      navigate(-1);
+    }
+  }, []);
+  if (!isLoggedIn) return;
+
   const queryClient = useQueryClient();
   // 수정 삭제 버튼 토글
   const [is_ClickPost, setClickPost] = useState(false);

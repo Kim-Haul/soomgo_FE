@@ -1,8 +1,20 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { Outlet, NavLink } from 'react-router-dom';
+import { Outlet, NavLink, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 const Mypageactivity = () => {
+  const navigate = useNavigate();
+  const { isLoggedIn } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert('로그인 한 유저만 이용할 수 있습니다.');
+      navigate('/login');
+    }
+  }, []);
+  if (!isLoggedIn) return;
+
   return (
     <>
       <Container>

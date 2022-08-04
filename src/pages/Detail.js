@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import styled from 'styled-components';
+import { useSelector } from 'react-redux';
 
 import apis from '../api/index';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -17,6 +18,16 @@ import { RiUser3Line } from 'react-icons/ri';
 const Detail = () => {
   const { postId } = useParams();
   const navigate = useNavigate();
+  const { isLoggedIn, gosu } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert('로그인 한 유저만 게시글을 확인할 수 있습니다.');
+      navigate(-1);
+    }
+  }, []);
+  if (!isLoggedIn) return;
+
   // 댓글 입력 받기
   const comment_input = React.useRef('');
 
