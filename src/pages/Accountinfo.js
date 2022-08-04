@@ -1,24 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
-import { AiOutlineRight } from 'react-icons/ai';
-import apis from '../api/index';
 import { useQuery } from '@tanstack/react-query';
-import { useNavigate, Navigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { AiOutlineRight } from 'react-icons/ai';
+
+import apis from '../api/index';
 
 const Accountinfo = () => {
-  // FIXME: 리덕스 로그인 유무 데이터로 교체
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  // useEffect(() => {
-  //   const authCheck = localStorage.getItem('TOKEN');
-  //   if (authCheck) {
-  //     setIsLoggedIn(true);
-  //   }
-  //   if (!isLoggedIn) {
-  //     return <Navigate to="/login" replace={true} />;
-  //   }
-  // }, []);
-
   const navigate = useNavigate();
+  const { isLoggedIn } = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (!isLoggedIn) {
+      alert('로그인 한 유저만 이용할 수 있습니다.');
+      navigate('/login');
+    }
+  }, []);
+  if (!isLoggedIn) return;
 
   // 유저정보 불러오기 api
   const getMyProfile = async () => {

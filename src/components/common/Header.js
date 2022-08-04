@@ -1,16 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
-import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import apis from '../../api/index';
 
-// import { useSelector } from 'react-redux/es/exports';
-// import { useDispatch } from 'react-redux/es/exports';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleLoggedIn, toggleGosu } from '../../redux/modules/userSlice';
 
 const Header = () => {
-  // const dispatch = useDispatch();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const dispatch = useDispatch();
+  // const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [profileData, setProfileData] = useState({});
+  const { isLoggedIn, gosu } = useSelector((state) => state.user);
 
   useEffect(() => {
     const authCheck = localStorage.getItem('TOKEN');
@@ -18,21 +19,26 @@ const Header = () => {
       try {
         const res = await apis.getAuth();
         setProfileData(res.data);
+        dispatch(toggleLoggedIn(true));
+        dispatch(toggleGosu(res.data.gosu));
       } catch (e) {
         console.log(e);
       }
     };
 
     if (authCheck) {
-      setIsLoggedIn(true);
+      // setIsLoggedIn(true);
       getMyProfile();
     } else {
-      setIsLoggedIn(false);
+      dispatch(toggleLoggedIn(false));
+      dispatch(toggleGosu(false));
+      // setIsLoggedIn(false);
     }
   }, []);
 
   useEffect(() => {
     console.log(profileData);
+    console.log('로그인', isLoggedIn, '고수', gosu);
   }, [profileData]);
 
   // 로그아웃시 헤더만 리프레쉬
@@ -101,6 +107,7 @@ const Header = () => {
       // 유저정보 쿼리 다시 불러오기!
       // queryClient.invalidateQueries('profile_query');
       setProfileData({ ...profileData, gosu: !profileData.gosu });
+      dispatch(toggleGosu(!profileData.gosu));
     },
   });
 
@@ -161,9 +168,11 @@ const Header = () => {
                       <button
                         onClick={() => {
                           Toggle();
-                          queryClient.invalidateQueries(['mypageProfile'], { refetchType: 'all' });
+                          queryClient.invalidateQueries(['mypageProfile'], {
+                            refetchType: 'all',
+                          });
                           alert('고객으로 전환되었습니다.');
-                          navigate('/mypage', {state: {gosu: false}});
+                          navigate('/mypage', { state: { gosu: false } });
                         }}
                       >
                         고객으로 전환
@@ -174,7 +183,7 @@ const Header = () => {
                           Toggle();
                           queryClient.invalidateQueries(['mypageProfile']);
                           alert('고수 유저로 전환되었습니다.');
-                          navigate('/mypage', {state: {gosu: true}});
+                          navigate('/mypage', { state: { gosu: true } });
                         }}
                       >
                         고수로 전환
@@ -188,7 +197,8 @@ const Header = () => {
                 onClick={() => {
                   localStorage.removeItem('TOKEN');
                   setCheck(!check);
-                  setIsLoggedIn(false);
+                  dispatch(toggleLoggedIn(false));
+                  dispatch(toggleGosu(false));
                   alert('로그아웃 되었습니다.');
                   navigate('/');
                 }}

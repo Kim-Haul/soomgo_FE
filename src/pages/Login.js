@@ -1,17 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import Form from 'react-bootstrap/Form';
 import apis from '../api';
-import KakaoLoginRedirect from '../components/KakaoLoginRedirect';
 
-// import { useDispatch } from 'react-redux/es/exports';
-// import { AddUser } from '../redux/modules/userSlice';
+import { useDispatch } from 'react-redux';
+import { AddUser, toggleLoggedIn, toggleGosu } from '../redux/modules/userSlice';
 
 const Login = () => {
   const [login, setLogin] = useState(false);
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const {
     register,
@@ -29,6 +28,8 @@ const Login = () => {
       const res = await apis.login(data);
       console.log('로그인정보 찍어보기', res.data);
       localStorage.setItem('TOKEN', res.data.token);
+      dispatch(toggleLoggedIn(true));
+      dispatch(toggleGosu(res.data.gosu));
       // dispatch(
       //   AddUser({
       //     username: res.data.username,
