@@ -1,8 +1,6 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { bookmark } from '../data.js';
 import apis from '../api/index';
@@ -19,7 +17,6 @@ const Accountinfo = () => {
     }
   }, []);
   if (!isLoggedIn) return;
-
 
   // 북마크 목록 불러오기 api
   const getBookmarkedPosts = async () => {
