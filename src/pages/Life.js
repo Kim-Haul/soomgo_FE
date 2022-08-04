@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import styled, { css } from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -19,6 +19,7 @@ import Loading from '../components/common/Loading';
 import { BiSearch } from 'react-icons/bi';
 import { AiFillLike } from 'react-icons/ai';
 import { BsChatDotsFill } from 'react-icons/bs';
+import { IoClose } from 'react-icons/io5';
 
 const Life = () => {
   const navigate = useNavigate();
@@ -34,9 +35,15 @@ const Life = () => {
   const queryClient = useQueryClient();
   const { ref, inView } = useInView();
   const [selected, setSelected] = useState('ALL');
+  const [isModalShown, setIsModalShown] = useState(true);
+  const [typed, setTyped] = useState('');
   const onClickCategory = (name) => {
     window.scrollTo(0, 0);
     setSelected(name);
+  };
+
+  const onChangeKeyword = (e) => {
+    setTyped(e.target.value);
   };
 
   const getPostData = async (pageParam = 0) => {
@@ -106,7 +113,6 @@ const Life = () => {
           <ul>
             <h3 hidden>카테고리 목록</h3>
             {categories &&
-              // FIXME: key 추가, 데이터 없을 때 처리 다시
               categories.map((category) => {
                 return (
                   <CategoryItem
@@ -132,11 +138,35 @@ const Life = () => {
             <input
               id="search-community"
               type="text"
-              placeholder="키워드와 #태그 모두 검색할 수 있어요."
+              value={typed}
+              onChange={onChangeKeyword}
+              placeholder="키워드로 검색할 수 있어요."
+              onClick={() => setIsModalShown(true)}
             />
+            {isModalShown && (
+              <SearchModal>
+                <Keyword>
+                  <span>&quot;{typed}&quot;</span> 검색 결과
+                </Keyword>
+                <ModalContainer>
+                  <SearchList>
+                    {/* 검색 결과 map */}
+                    <li><BiSearch />검색결과</li>
+                    <li><BiSearch />검색결과</li>
+                    <li><BiSearch />검색결과</li>
+                    <li><BiSearch />검색결과</li>
+                    <li><BiSearch />검색결과</li>
+                    <li><BiSearch />검색결과</li>
+                    <li><BiSearch />검색결과</li>
+                  </SearchList>
+                  <BtnClose>
+                    <IoClose onClick={() => setIsModalShown(false)}/>
+                  </BtnClose>
+                </ModalContainer>
+              </SearchModal>
+            )}
           </SearchInput>
 
-          {/* TODO: 조회수 순 포스트 캐러셀 추가 */}
           {selected === 'ALL' && (
             <>
               <h3>지금 가장 뜨거운 숨고픽🔥</h3>
@@ -170,7 +200,13 @@ const Life = () => {
                           }}
                         >
                           <div style={{ padding: '20px' }}>
-                            <div style={{ fontSize: '12px', color: '#888', fontWeight: '500' }}>
+                            <div
+                              style={{
+                                fontSize: '12px',
+                                color: '#888',
+                                fontWeight: '500',
+                              }}
+                            >
                               {category[v.subject][0]}
                             </div>
                             <div
@@ -287,6 +323,7 @@ const LifeContentSection = styled.section`
 `;
 
 const SearchInput = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   padding: 8px 16px;
@@ -310,8 +347,76 @@ const SearchInput = styled.div`
   }
 `;
 
+const SearchModal = styled.div`
+  position: absolute;
+  top: 55px;
+  left: 0;
+  right: 0;
+  border: 1px solid #f2f2f2;
+  border-radius: 6px;
+  box-shadow: 0 0.125rem 0.625rem 0 rgb(0 0 0 / 10%);
+  background: rgba(255, 255, 255, 0.95);
+  z-index: 10;
+`;
+
+const ModalContainer = styled.div`
+  overflow-y: auto;
+  height: 250px;
+  padding: 20px;
+  &::-webkit-scrollbar {
+    width: 12px;
+  }
+  &::-webkit-scrollbar-thumb {
+    width: 5px;
+    height: 79px;
+    background-color: #eee;
+    border-radius: 10px;
+    background-clip: padding-box;
+    border: 4px solid transparent;
+  }
+  &::-webkit-scrollbar-trac {
+    background: none;
+  }
+`;
+
+const Keyword = styled.p`
+  margin-top: 20px;
+  text-align: center;
+  span {
+    color: #00c7ae;
+  }
+`;
+
+const SearchList = styled.ul`
+  li {
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    &:hover {
+      background: rgba(0, 0, 0, 0.05);
+    }
+  }
+`;
+
+const BtnClose = styled.button`
+  position: absolute;
+  top: 20px;
+  right: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px;
+  border-radius: 50%;
+  svg {
+    margin: 0;
+    fill: #fff;
+  }
+`;
+
 const Wrap = styled.div`
   margin: 20px 0px;
+  height: 100px;
 `;
 
 const StyledSlider = styled(Slider)`
